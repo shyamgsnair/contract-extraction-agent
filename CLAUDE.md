@@ -32,17 +32,18 @@ This is a personal side project, not client work. Use only public or synthetic c
 ## Scope rules
 
 - **Input is digital PDFs only.** Reject scanned PDFs (pages with almost no extractable text), password-protected PDFs, Word files and images at intake, with a clear message. Don't send rejected files to Claude.
-- **Contract types:** vendor master agreements (MSAs), statements of work (SOWs), amendments and order forms.
+- **Contract types:** supply and purchase agreements, vendor master agreements (MSAs), statements of work (SOWs), amendments and order forms. Pricing and purchase order terms matter most.
+- **Test contracts** are SEC EDGAR exhibits. Where prices are redacted (`[***]`), they are replaced with realistic synthetic values before converting to PDF. Each file's EDGAR link and the fact that its prices are synthetic are recorded in `packages/agent/test-data/sources.md`.
 - **Users upload contracts only through the web app** (Phase 4: upload page with drag-and-drop and a processing status). The command-line tool from Phases 2 and 3 is a developer tool for testing extraction on sample contracts, not a user feature.
 
 ## How extraction must work
 
 - Send the PDF to Claude directly, which reads both page images and text. Use `unpdf` page text only for verification and for the agent's internal search and page tools (these help Claude find exact wording; they are not a user-facing search).
-- Every extracted field returns: `value`, `quote` (verbatim text from the contract), `page`, and `confidence` (high, medium or low).
+- Every extracted field returns: `value`, `quote` (verbatim text from the contract), `page`, and `confidence` (high, medium or low). For the price list, each row carries its own `quote`, `page` and `confidence`.
 - **No guessing.** If the contract doesn't state something, `value` must be `null`.
 - **Verification is done in code, not by the model.**
   - Each quote must appear in the PDF text on the cited page. Normalize whitespace, quotes and dashes before comparing.
-  - Business rules must hold, for example: expiration date after effective date, term length matching the dates, no renewal term when auto-renewal is false, customer and vendor not the same party.
+  - Business rules must hold: expiration date after effective date, customer and vendor not the same party, every unit price positive with a currency, payment terms greater than 0 days.
 - Failed checks go back to Claude to fix, for up to 3 rounds. Anything still failing is flagged for human review, never silently accepted.
 - Record the model, prompt version, token cost and duration for every run.
 
@@ -61,16 +62,31 @@ This is a personal side project, not client work. Use only public or synthetic c
 - The PDF source viewer is one shared component, used by both this table and the review screen.
 - No keyword or full-text search in the PoC. Use the `quote` and `page` stored on each extracted field for highlighting.
 
-## Draft field list (to be finalized in Phase 1)
+## Field list (agreed in Phase 1)
 
-Document type, title, parent agreement (for amendments and SOWs), customer name, vendor name, effective date, expiration date, initial term (months), auto-renews, renewal term (months), non-renewal notice (days), termination for convenience, termination notice (days), payment terms (days), currency, total contract value, price escalation, liability cap, governing law.
+| # | Field | Type | Meaning |
+| --- | --- | --- | --- |
+| 1 | Document type | supply agreement / MSA / SOW / amendment / order form | The kind of contract |
+| 2 | Customer name | text | Legal name of the buyer |
+| 3 | Vendor name | text | Legal name of the seller |
+| 4 | Effective date | date | When it starts. "On last signature" uses the signature date, at medium confidence |
+| 5 | Expiration date | date | End of the initial term, only if a date is stated (otherwise null) |
+| 6 | Auto-renews | yes / no | Renews without action by either party |
+| 7 | Price list | rows of: item, unit price, currency (ISO code), unit of measure | The agreed prices; each row has its own quote and page |
+| 8 | Price escalation | text | How and when prices can change, e.g. "CPI, capped at 3% a year" |
+| 9 | Payment terms | days | Net days, e.g. 45 |
+| 10 | Minimum commitment | text | Minimum order quantity or minimum annual spend |
+| 11 | PO acceptance | days | Time the vendor has to accept or reject a purchase order, including any "deemed accepted" rule |
+
+- Redacted terms (`[***]`) that were not replaced are `null`, with a note that they are redacted.
+- Amendments fill only the fields they change; everything else is `null`.
 
 ## Phases
 
 | Phase | What gets built | Done when |
 | --- | --- | --- |
 | 0. Setup | pnpm workspace, shared TypeScript config, `.env.example`, Drizzle connected to Supabase | Repo installs cleanly and Drizzle connects to Supabase |
-| 1. Field list and test set | Final field list; 10 to 15 EDGAR vendor contracts; 5 hand-labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
+| 1. Field list and test set | Final field list as a Zod schema; 10 to 15 EDGAR supply and vendor contracts (redacted prices replaced with synthetic values); 5 hand-labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
 | 2. Extraction agent | Intake checks, page text, Claude agent loop with search and page tools, verification, repair rounds, CLI that writes JSON, accuracy scoring script | Runs on all test contracts and reports per-field accuracy (go/no-go point) |
 | 3. Save to Supabase | Drizzle tables `documents`, `contracts`, `extracted_fields`, `extraction_runs`; PDFs uploaded to Storage; `--save` CLI option; duplicate detection by file hash | CLI run fills the tables and they can be queried in Supabase |
 | 4. Web app | Login, upload page (drag-and-drop, intake checks, processing status), contract table (filter and sort by extracted fields; click a value to open the PDF at its highlighted quote), review screen (PDF beside the fields, approve or correct) | A contract can be uploaded, found by its fields, traced to its source quote, and reviewed end to end in the browser |
