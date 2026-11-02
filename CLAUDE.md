@@ -78,6 +78,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 | 10 | Minimum commitment | text | Minimum order quantity or minimum annual spend |
 | 11 | PO acceptance | days | Time the vendor has to accept or reject a purchase order, including any "deemed accepted" rule |
 
+- `null` means the contract is silent. For text fields, `"None"` means the contract explicitly says there is none (for example "Customer shall have no minimum order commitments").
 - Redacted terms (`[***]`) that were not replaced are `null`, with a note that they are redacted.
 - Amendments fill only the fields they change; everything else is `null`.
 
@@ -86,7 +87,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 | Phase | What gets built | Done when |
 | --- | --- | --- |
 | 0. Setup | pnpm workspace, shared TypeScript config, `.env.example`, Drizzle connected to Supabase | Repo installs cleanly and Drizzle connects to Supabase |
-| 1. Field list and test set | Final field list as a Zod schema; 10 to 15 EDGAR supply and vendor contracts (redacted prices replaced with synthetic values); 5 hand-labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
+| 1. Field list and test set | Final field list as a Zod schema; 5 EDGAR supply contracts (redacted prices replaced with synthetic values), all labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
 | 2. Extraction agent | Intake checks, page text, Claude agent loop with search and page tools, verification, repair rounds, CLI that writes JSON, accuracy scoring script | Runs on all test contracts and reports per-field accuracy (go/no-go point) |
 | 3. Save to Supabase | Drizzle tables `documents`, `contracts`, `extracted_fields`, `extraction_runs`; PDFs uploaded to Storage; `--save` CLI option; duplicate detection by file hash | CLI run fills the tables and they can be queried in Supabase |
 | 4. Web app | Login, upload page (drag-and-drop, intake checks, processing status), contract table (filter and sort by extracted fields; click a value to open the PDF at its highlighted quote), review screen (PDF beside the fields, approve or correct) | A contract can be uploaded, found by its fields, traced to its source quote, and reviewed end to end in the browser |
@@ -95,7 +96,9 @@ This is a personal side project, not client work. Use only public or synthetic c
 
 ## Current status
 
-- **Current phase:** Phase 1 (not started). Phase 0 done: workspace installs, type-checks and connects to Supabase.
+- **Current phase:** Phase 2 (not started).
+- Phase 0 done: workspace installs, type-checks and connects to Supabase.
+- Phase 1 done: 11-field Zod schema (`packages/agent/src/fields.ts`), 5 test contracts, 5 reviewed answer keys. Five contracts is a deliberate PoC choice; accuracy figures from them are indicative, not statistically solid.
 - Update this line at the end of each phase.
 
 ## Commands

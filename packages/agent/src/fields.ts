@@ -44,7 +44,9 @@ export const fieldValues = {
   priceEscalation: z
     .string()
     .min(1)
-    .describe('How and when prices can change, in a short phrase, e.g. "CPI-based, capped at 3% a year".'),
+    .describe(
+      'How and when prices can change, in a short phrase, e.g. "CPI-based, capped at 3% a year". Use "None" if the contract explicitly says prices cannot change; null if it is silent.',
+    ),
   paymentTermsDays: z
     .number()
     .int()
@@ -53,7 +55,9 @@ export const fieldValues = {
   minimumCommitment: z
     .string()
     .min(1)
-    .describe("Minimum order quantity or minimum purchase commitment, in a short phrase."),
+    .describe(
+      'Minimum order quantity or minimum purchase commitment, in a short phrase. Use "None" if the contract explicitly says there is no minimum; null if it is silent.',
+    ),
   poAcceptance: PoAcceptance.describe("How the vendor accepts or rejects purchase orders."),
 } as const;
 
