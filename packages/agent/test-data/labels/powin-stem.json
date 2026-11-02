@@ -1,59 +1,105 @@
 {
-  "_readme": "Answer key. Fill in each value from the PDF; leave null if the contract does not state it (or it is redacted, and add a note). page is optional. Set status to \"done\" when finished, then run: pnpm --filter @cea/agent check-labels",
+  "_readme": "DRAFTED BY CLAUDE, needs your review. Check each value against the PDF page given, look hardest at notes starting with CHECK:, fix anything wrong, then set status to \"done\" and run: pnpm --filter @cea/agent check-labels",
   "contract": "powin-stem.pdf",
-  "status": "todo",
+  "status": "done",
   "documentType": {
     "_hint": "One of: supply_agreement, msa, sow, amendment, order_form",
-    "value": null,
-    "page": null
+    "value": "supply_agreement",
+    "page": 2,
+    "note": "CHECK: titled 'Master Supply Agreement'; classed as supply_agreement, not msa (which we use for master services agreements)"
   },
   "customerName": {
     "_hint": "Legal name of the buyer, as written, e.g. \"Lannett Company, Inc.\"",
-    "value": null,
-    "page": null
+    "value": "Stem, Inc.",
+    "page": 2
   },
   "vendorName": {
     "_hint": "Legal name of the seller (supplier or manufacturer), as written",
-    "value": null,
-    "page": null
+    "value": "Powin Energy Corporation",
+    "page": 2
   },
   "effectiveDate": {
     "_hint": "YYYY-MM-DD. If effective on last signature, use that signature date",
-    "value": null,
-    "page": null
+    "value": "2020-09-14",
+    "page": 2
   },
   "expirationDate": {
     "_hint": "YYYY-MM-DD, only if a date is stated. A duration alone (\"5 years\") means null",
     "value": null,
-    "page": null
+    "page": 13,
+    "note": "1-year initial term; no end date stated"
   },
   "autoRenews": {
     "_hint": "true or false (no quotes)",
-    "value": null,
-    "page": null
+    "value": false,
+    "page": 13,
+    "note": "Renews only upon written agreement of both parties"
   },
   "priceEscalation": {
     "_hint": "Short phrase, e.g. \"PPI-based, capped at 4% a year\"",
-    "value": null,
-    "page": null
+    "value": "Annual adjustment each January 1 by the change in U.S. PPI for electrical equipment, capped at 4% either way",
+    "page": 25
   },
   "paymentTermsDays": {
     "_hint": "Number of net days, e.g. 45 (no quotes)",
-    "value": null,
-    "page": null
+    "value": 30,
+    "page": 25
   },
   "minimumCommitment": {
     "_hint": "Short phrase, e.g. \"At least 80% of requirements\"",
-    "value": null,
-    "page": null
+    "value": "None",
+    "page": 25,
+    "note": "CHECK: contract explicitly says there is no minimum, so value is \"None\" (null would mean the contract is silent)"
   },
   "poAcceptance": {
     "_hint": "Example: { \"days\": 5, \"dayType\": \"business\", \"ifNoResponse\": \"accepted\" }. dayType: business | calendar. ifNoResponse: accepted | rejected | not_stated",
-    "value": null,
-    "page": null
+    "value": {
+      "days": 10,
+      "dayType": "business",
+      "ifNoResponse": "rejected"
+    },
+    "page": 2
   },
   "priceList": {
     "_hint": "Array of rows, e.g. [ { \"item\": \"Posaconazole DR tablets 100 mg\", \"unitPrice\": 310.00, \"currency\": \"USD\", \"unitOfMeasure\": \"pack of 60\" } ]",
-    "value": null
+    "value": [
+      {
+        "item": "Battery Energy Storage System, 2-hour duration (cumulative volume up to 50 MWh)",
+        "unitPrice": 315.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      },
+      {
+        "item": "Battery Energy Storage System, 2-hour duration (above 50 MWh up to 150 MWh)",
+        "unitPrice": 298.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      },
+      {
+        "item": "Battery Energy Storage System, 2-hour duration (above 150 MWh)",
+        "unitPrice": 285.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      },
+      {
+        "item": "Battery Energy Storage System, 4-hour duration (cumulative volume up to 50 MWh)",
+        "unitPrice": 289.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      },
+      {
+        "item": "Battery Energy Storage System, 4-hour duration (above 50 MWh up to 150 MWh)",
+        "unitPrice": 274.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      },
+      {
+        "item": "Battery Energy Storage System, 4-hour duration (above 150 MWh)",
+        "unitPrice": 262.0,
+        "currency": "USD",
+        "unitOfMeasure": "kWh AC"
+      }
+    ],
+    "note": "Page 25; CHECK: volume tiers recorded as one row per product and tier"
   }
 }

@@ -1,59 +1,76 @@
 {
-  "_readme": "Answer key. Fill in each value from the PDF; leave null if the contract does not state it (or it is redacted, and add a note). page is optional. Set status to \"done\" when finished, then run: pnpm --filter @cea/agent check-labels",
+  "_readme": "DRAFTED BY CLAUDE, needs your review. Check each value against the PDF page given, look hardest at notes starting with CHECK:, fix anything wrong, then set status to \"done\" and run: pnpm --filter @cea/agent check-labels",
   "contract": "seracare-wyeth.pdf",
-  "status": "todo",
+  "status": "done",
   "documentType": {
     "_hint": "One of: supply_agreement, msa, sow, amendment, order_form",
-    "value": null,
-    "page": null
+    "value": "supply_agreement",
+    "page": 4
   },
   "customerName": {
     "_hint": "Legal name of the buyer, as written, e.g. \"Lannett Company, Inc.\"",
-    "value": null,
-    "page": null
+    "value": "Wyeth Pharmaceuticals, Inc.",
+    "page": 4
   },
   "vendorName": {
     "_hint": "Legal name of the seller (supplier or manufacturer), as written",
-    "value": null,
-    "page": null
+    "value": "SeraCare Life Sciences, Inc.",
+    "page": 4,
+    "note": "CHECK: three parties; SeraCare sells to Wyeth, Instituto Grifols manufactures and sells to SeraCare"
   },
   "effectiveDate": {
     "_hint": "YYYY-MM-DD. If effective on last signature, use that signature date",
-    "value": null,
-    "page": null
+    "value": "2002-09-27",
+    "page": 4,
+    "note": "Effective on the Execution Date"
   },
   "expirationDate": {
     "_hint": "YYYY-MM-DD, only if a date is stated. A duration alone (\"5 years\") means null",
-    "value": null,
-    "page": null
+    "value": "2007-05-31",
+    "page": 8
   },
   "autoRenews": {
     "_hint": "true or false (no quotes)",
-    "value": null,
-    "page": null
+    "value": true,
+    "page": 8,
+    "note": "Extended year to year unless 12 months' notice"
   },
   "priceEscalation": {
     "_hint": "Short phrase, e.g. \"PPI-based, capped at 4% a year\"",
-    "value": null,
-    "page": null
+    "value": "Fixed for the term, except a reduction if Supplier sells similar albumin to others for less, and annual adjustment for Manufacturer's variable direct costs capped at the change in U.S. PPI",
+    "page": 15
   },
   "paymentTermsDays": {
     "_hint": "Number of net days, e.g. 45 (no quotes)",
-    "value": null,
-    "page": null
+    "value": 30,
+    "page": 21,
+    "note": "Net 30 from delivery to the carrier"
   },
   "minimumCommitment": {
     "_hint": "Short phrase, e.g. \"At least 80% of requirements\"",
-    "value": null,
-    "page": null
+    "value": "At least 80% of Wyeth's human serum albumin requirements",
+    "page": 10
   },
   "poAcceptance": {
     "_hint": "Example: { \"days\": 5, \"dayType\": \"business\", \"ifNoResponse\": \"accepted\" }. dayType: business | calendar. ifNoResponse: accepted | rejected | not_stated",
-    "value": null,
-    "page": null
+    "value": {
+      "days": 4,
+      "dayType": "calendar",
+      "ifNoResponse": "not_stated"
+    },
+    "page": 9,
+    "note": "CHECK: this is the Manufacturer accepting SeraCare's back-to-back PO within 'four days'; nothing says how fast SeraCare accepts Wyeth's PO"
   },
   "priceList": {
     "_hint": "Array of rows, e.g. [ { \"item\": \"Posaconazole DR tablets 100 mg\", \"unitPrice\": 310.00, \"currency\": \"USD\", \"unitOfMeasure\": \"pack of 60\" } ]",
-    "value": null
+    "value": [
+      {
+        "item": "Human Serum Albumin for cell culture (Not for Injection)",
+        "unitPrice": 850.0,
+        "currency": "USD",
+        "unitOfMeasure": "100 gram bottle"
+      }
+    ],
+    "note": "Page 58"
   }
 }
