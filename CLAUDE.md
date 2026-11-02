@@ -12,6 +12,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 4. **Explain decisions in plain terms.** I'm an ex-Java developer with strong finance domain knowledge. Comparisons to Java concepts are helpful.
 5. **Never commit secrets.** API keys and database URLs live only in `.env` files, which must be in `.gitignore`. Keep `.env.example` up to date with placeholder values.
 6. **End each phase cleanly.** Code type-checks, the phase's "done when" check passes, and you summarize what changed so I can commit.
+7. **No paid API calls without my OK.** Development runs only on the `claude-code` engine (my Pro plan). Never call the Anthropic API (`api` engine) without my explicit OK for that specific run.
 
 ## Stack (decided, do not change without asking)
 
@@ -20,7 +21,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 | Language | TypeScript everywhere |
 | Repo | pnpm workspace: `packages/agent` (extraction agent), `packages/db` (Drizzle schema, migrations and client, shared by the CLI and web app) and `apps/web` (Next.js app, created in Phase 4) |
 | Front end | Next.js (App Router), Tailwind CSS, shadcn/ui |
-| Extraction agent | Standalone, reusable TypeScript package (`packages/agent`) using the Anthropic TypeScript SDK (`@anthropic-ai/sdk`). Exposes one entry point, `extractContract`, that the CLI, web app and background job all call |
+| Extraction agent | Standalone, reusable TypeScript package (`packages/agent`). Exposes one entry point, `extractContract`, that the CLI, web app and background job all call. Two interchangeable engines: `claude-code` (Claude Code headless, `claude -p`, on the Pro plan; used for all development, $0) and `api` (Anthropic TypeScript SDK `@anthropic-ai/sdk`; used only for the demo run) |
 | AI model | Claude Sonnet 5.5 (`claude-sonnet-5-5`), set through config so it can be changed |
 | Schema and validation | Zod. The field list is defined once and drives the AI tool schema, validation and UI types |
 | Database | Supabase Postgres |
@@ -45,7 +46,7 @@ This is a personal side project, not client work. Use only public or synthetic c
   - Each quote must appear in the PDF text on the cited page. Normalize whitespace, quotes and dashes before comparing.
   - Business rules must hold: expiration date after effective date, customer and vendor not the same party, every unit price positive with a currency, payment terms greater than 0 days.
 - Failed checks go back to Claude to fix, for up to 3 rounds. Anything still failing is flagged for human review, never silently accepted.
-- Record the model, prompt version, token cost and duration for every run.
+- Record the engine, model, prompt version, token cost and duration for every run. For `claude-code` runs the cost is the equivalent API cost reported by Claude Code (nothing is billed); for `api` runs it is the actual cost.
 
 ## Reusable agent
 
@@ -88,7 +89,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 | --- | --- | --- |
 | 0. Setup | pnpm workspace, shared TypeScript config, `.env.example`, Drizzle connected to Supabase | Repo installs cleanly and Drizzle connects to Supabase |
 | 1. Field list and test set | Final field list as a Zod schema; 5 EDGAR supply contracts (redacted prices replaced with synthetic values), all labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
-| 2. Extraction agent | Intake checks, page text, Claude agent loop with search and page tools, verification, repair rounds, CLI that writes JSON, accuracy scoring script | Runs on all test contracts and reports per-field accuracy (go/no-go point) |
+| 2. Extraction agent | Intake checks, page text, `claude-code` and `api` engines, verification, repair rounds, CLI that writes JSON, accuracy scoring script, one approved `api` demo run | Runs on all test contracts and reports per-field accuracy (go/no-go point). Go if overall accuracy is at least 85%, no field is below 60%, and every quote is verified or flagged |
 | 3. Save to Supabase | Drizzle tables `documents`, `contracts`, `extracted_fields`, `extraction_runs`; PDFs uploaded to Storage; `--save` CLI option; duplicate detection by file hash | CLI run fills the tables and they can be queried in Supabase |
 | 4. Web app | Login, upload page (drag-and-drop, intake checks, processing status), contract table (filter and sort by extracted fields; click a value to open the PDF at its highlighted quote), review screen (PDF beside the fields, approve or correct) | A contract can be uploaded, found by its fields, traced to its source quote, and reviewed end to end in the browser |
 | 5. Background jobs and deploy | Extraction as an Inngest job with status in the UI; deploy to Vercel | Runs from a public URL |
@@ -96,7 +97,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 
 ## Current status
 
-- **Current phase:** Phase 2 (not started).
+- **Current phase:** Phase 2 (in progress). Step 2a (intake and page text) done; next is 2b (engines, verification, repair).
 - Phase 0 done: workspace installs, type-checks and connects to Supabase.
 - Phase 1 done: 11-field Zod schema (`packages/agent/src/fields.ts`), 5 test contracts, 5 reviewed answer keys. Five contracts is a deliberate PoC choice; accuracy figures from them are indicative, not statistically solid.
 - Update this line at the end of each phase.
@@ -110,4 +111,5 @@ Run from the repo root. Secrets go in `.env` at the repo root (copy `.env.exampl
 - Check database connection: `pnpm db:check`
 - Database migrations: `pnpm --filter @cea/db generate` (create SQL from the schema), then `pnpm --filter @cea/db migrate` (apply it)
 - Check answer-key labels: `pnpm --filter @cea/agent check-labels`
+- Check intake (test contracts accepted, bad files rejected): `pnpm --filter @cea/agent check-intake`
 - Run extraction: TBD (Phase 2)
