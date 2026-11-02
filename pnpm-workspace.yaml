@@ -1,0 +1,7 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# esbuild (used by drizzle-kit) works from its prebuilt binary; its install script isn't needed.
+allowBuilds:
+  esbuild: false
