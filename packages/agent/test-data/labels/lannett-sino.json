@@ -1,0 +1,59 @@
+{
+  "_readme": "Answer key. Fill in each value from the PDF; leave null if the contract does not state it (or it is redacted, and add a note). page is optional. Set status to \"done\" when finished, then run: pnpm --filter @cea/agent check-labels",
+  "contract": "lannett-sino.pdf",
+  "status": "todo",
+  "documentType": {
+    "_hint": "One of: supply_agreement, msa, sow, amendment, order_form",
+    "value": null,
+    "page": null
+  },
+  "customerName": {
+    "_hint": "Legal name of the buyer, as written, e.g. \"Lannett Company, Inc.\"",
+    "value": null,
+    "page": null
+  },
+  "vendorName": {
+    "_hint": "Legal name of the seller (supplier or manufacturer), as written",
+    "value": null,
+    "page": null
+  },
+  "effectiveDate": {
+    "_hint": "YYYY-MM-DD. If effective on last signature, use that signature date",
+    "value": null,
+    "page": null
+  },
+  "expirationDate": {
+    "_hint": "YYYY-MM-DD, only if a date is stated. A duration alone (\"5 years\") means null",
+    "value": null,
+    "page": null
+  },
+  "autoRenews": {
+    "_hint": "true or false (no quotes)",
+    "value": null,
+    "page": null
+  },
+  "priceEscalation": {
+    "_hint": "Short phrase, e.g. \"PPI-based, capped at 4% a year\"",
+    "value": null,
+    "page": null
+  },
+  "paymentTermsDays": {
+    "_hint": "Number of net days, e.g. 45 (no quotes)",
+    "value": null,
+    "page": null
+  },
+  "minimumCommitment": {
+    "_hint": "Short phrase, e.g. \"At least 80% of requirements\"",
+    "value": null,
+    "page": null
+  },
+  "poAcceptance": {
+    "_hint": "Example: { \"days\": 5, \"dayType\": \"business\", \"ifNoResponse\": \"accepted\" }. dayType: business | calendar. ifNoResponse: accepted | rejected | not_stated",
+    "value": null,
+    "page": null
+  },
+  "priceList": {
+    "_hint": "Array of rows, e.g. [ { \"item\": \"Posaconazole DR tablets 100 mg\", \"unitPrice\": 310.00, \"currency\": \"USD\", \"unitOfMeasure\": \"pack of 60\" } ]",
+    "value": null
+  }
+}

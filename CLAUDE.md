@@ -106,4 +106,5 @@ Run from the repo root. Secrets go in `.env` at the repo root (copy `.env.exampl
 - Type-check: `pnpm typecheck`
 - Check database connection: `pnpm db:check`
 - Database migrations: `pnpm --filter @cea/db generate` (create SQL from the schema), then `pnpm --filter @cea/db migrate` (apply it)
+- Check answer-key labels: `pnpm --filter @cea/agent check-labels`
 - Run extraction: TBD (Phase 2)
