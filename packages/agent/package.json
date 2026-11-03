@@ -7,9 +7,12 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
     "check-labels": "node src/check-labels.ts",
-    "check-intake": "node src/check-intake.ts"
+    "check-intake": "node src/check-intake.ts",
+    "extract": "node --env-file-if-exists=../../.env src/cli.ts",
+    "score": "node src/score.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
     "unpdf": "^2.1.0",
     "zod": "^4.6.7"
   }

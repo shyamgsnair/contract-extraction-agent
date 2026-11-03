@@ -1,0 +1,163 @@
+{
+  "contract": "seracare-wyeth.pdf",
+  "status": "extracted",
+  "result": {
+    "documentType": {
+      "value": "supply_agreement",
+      "quote": "This Agreement (the “Supply Agreement” or the “Agreement”) entered into this 27th day of September 2002",
+      "page": 4,
+      "confidence": "high"
+    },
+    "customerName": {
+      "value": "Wyeth Pharmaceuticals, Inc.",
+      "quote": "and Wyeth Pharmaceuticals, Inc., acting through the Wyeth BioPharma unit of",
+      "page": 4,
+      "confidence": "high"
+    },
+    "vendorName": {
+      "value": "SeraCare Life Sciences, Inc.",
+      "quote": "by and among SeraCare Life Sciences, Inc., a California Corporation with offices at 1935 Avenida Del Oro, Suite F, Oceanside,",
+      "page": 4,
+      "confidence": "high",
+      "note": "SeraCare is the SUPPLIER; Instituto Grifols, S.A. is the MANUFACTURER and is a party to the agreement."
+    },
+    "effectiveDate": {
+      "value": "2002-09-27",
+      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007, unless",
+      "page": 8,
+      "confidence": "high"
+    },
+    "expirationDate": {
+      "value": "2007-05-31",
+      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007, unless",
+      "page": 8,
+      "confidence": "high"
+    },
+    "autoRenews": {
+      "value": true,
+      "quote": "Thereafter, it shall be extended from year-to-year, unless",
+      "page": 8,
+      "confidence": "high",
+      "note": "Extends year-to-year unless a party gives at least 12 months' prior written notice of termination."
+    },
+    "priceEscalation": {
+      "value": "Fixed for the term, except: prices drop to match lower prices SUPPLIER gives other customers; and prices may rise or fall with MANufacturer's labor/material costs, capped at the U.S. producer price index change",
+      "quote": "(a) Pricing according Appendix D shall be firm and fixed for the term of the Agreement, except as hereinafter provided.",
+      "page": 15,
+      "confidence": "medium"
+    },
+    "paymentTermsDays": {
+      "value": 30,
+      "quote": "7.01 Payment by Wyeth shall be made to SUPPLIER net thirty (30) days from the date of delivery of the PRODUCTS to the",
+      "page": 21,
+      "confidence": "high",
+      "note": "Runs from delivery to the common carrier specified by Wyeth."
+    },
+    "minimumCommitment": {
+      "value": "Wyeth shall purchase at least 80% of its human serum albumin requirements from SUPPLIER",
+      "quote": "(b) Requirements and Supply Contract. During the term of this Agreement, Wyeth shall purchase at least eighty percent (80%) of its",
+      "page": 10,
+      "confidence": "high"
+    },
+    "poAcceptance": {
+      "value": {
+        "days": 4,
+        "dayType": "calendar",
+        "ifNoResponse": "not_stated"
+      },
+      "quote": "(iii) MANUFACTURER will send the corresponding acceptance to SUPPLIER’s purchase order within a period of",
+      "page": 9,
+      "confidence": "low",
+      "note": "The four days is the period for MANUFACTURER to accept SUPPLIER's back-to-back purchase order. The contract does not say whether the days are business or calendar days, so calendar is assumed. It also does not say what happens if there is no response. Nothing states a deadline for accepting Wyeth's POs."
+    },
+    "priceList": {
+      "value": [
+        {
+          "item": "PRODUCT (Human Serum Albumin), per 100 gram bottle",
+          "unitPrice": 850,
+          "currency": "USD",
+          "unitOfMeasure": "100 gram bottle",
+          "quote": "The pricing for the PRODUCT is set at US$850.00 per 100 gram bottle.",
+          "page": 58,
+          "confidence": "high"
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "field": "documentType",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "customerName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "vendorName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "effectiveDate",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "expirationDate",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "autoRenews",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceEscalation",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "paymentTermsDays",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "minimumCommitment",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "poAcceptance",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceList[0]",
+      "quote": "verified",
+      "issues": []
+    }
+  ],
+  "needsReview": false,
+  "issues": [],
+  "run": {
+    "engine": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "promptVersion": "v2",
+    "repairRounds": 0,
+    "usage": {
+      "inputTokens": 1344,
+      "outputTokens": 3902,
+      "cacheReadTokens": 101285,
+      "cacheWriteTokens": 14431,
+      "costUsd": 0.10684350000000001
+    },
+    "costIsEquivalent": true,
+    "startedAt": "2026-11-03T03:22:34.987Z",
+    "durationMs": 30475
+  }
+}

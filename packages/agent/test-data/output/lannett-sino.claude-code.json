@@ -1,0 +1,162 @@
+{
+  "contract": "lannett-sino.pdf",
+  "status": "extracted",
+  "result": {
+    "documentType": {
+      "value": "supply_agreement",
+      "quote": "DISTRIBUTION AND SUPPLY AGREEMENT",
+      "page": 1,
+      "confidence": "high"
+    },
+    "customerName": {
+      "value": "LANNETT COMPANY, INC.",
+      "quote": "and LANNETT COMPANY, INC., a Delaware corporation having an address of 9000 State Road, Philadelphia, PA",
+      "page": 1,
+      "confidence": "high"
+    },
+    "vendorName": {
+      "value": "SINOTHERAPEUTICS INC.",
+      "quote": "by and between SINOTHERAPEUTICS INC., a limited company incorporated pursuant to the laws of the",
+      "page": 1,
+      "confidence": "high"
+    },
+    "effectiveDate": {
+      "value": "2019-08-02",
+      "quote": "is made this 2nd day of August, 2019 (the",
+      "page": 1,
+      "confidence": "high"
+    },
+    "expirationDate": {
+      "value": null,
+      "quote": null,
+      "page": null,
+      "confidence": "high",
+      "note": "Only a duration (five years from the Effective Date) is stated, not an explicit end date."
+    },
+    "autoRenews": {
+      "value": true,
+      "quote": "this Agreement shall automatically renew for renewal terms of one (1) year each unless either Party provides written notice to the",
+      "page": 21,
+      "confidence": "high",
+      "note": "Renewal applies if neither party is in material default and neither gives 180 days' notice of non-renewal."
+    },
+    "priceEscalation": {
+      "value": "After each anniversary of Commercial Launch, price may increase or decrease based on change in Supplier's COGS over the prior 12 months; good-faith renegotiation also possible",
+      "quote": "Following each anniversary of the Commercial Launch of the Product, the Pricing for",
+      "page": 6,
+      "confidence": "medium"
+    },
+    "paymentTermsDays": {
+      "value": 60,
+      "quote": "net 60 days; provided, however, that Lannett will not be obligated to pay any disputed amounts until such dispute has been",
+      "page": 7,
+      "confidence": "high"
+    },
+    "minimumCommitment": {
+      "value": null,
+      "quote": null,
+      "page": null,
+      "confidence": "medium"
+    },
+    "poAcceptance": {
+      "value": {
+        "days": 5,
+        "dayType": "business",
+        "ifNoResponse": "accepted"
+      },
+      "quote": "If such notification is not received by Lannett within five",
+      "page": 9,
+      "confidence": "high",
+      "note": "Continues: '(5) Business Days of receipt of such Purchase Order, the Purchase Order shall be deemed accepted.'"
+    },
+    "priceList": {
+      "value": [
+        {
+          "item": "Posaconazole Delayed Release Tablets 100mg, pack size 60",
+          "unitPrice": 310,
+          "currency": "USD",
+          "unitOfMeasure": "pack of 60",
+          "quote": "Posaconazole Delayed Release Tablets 100mg 60 310.00",
+          "page": 28,
+          "confidence": "high"
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "field": "documentType",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "customerName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "vendorName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "effectiveDate",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "expirationDate",
+      "quote": "none",
+      "issues": []
+    },
+    {
+      "field": "autoRenews",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceEscalation",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "paymentTermsDays",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "minimumCommitment",
+      "quote": "none",
+      "issues": []
+    },
+    {
+      "field": "poAcceptance",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceList[0]",
+      "quote": "verified",
+      "issues": []
+    }
+  ],
+  "needsReview": false,
+  "issues": [],
+  "run": {
+    "engine": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "promptVersion": "v2",
+    "repairRounds": 0,
+    "usage": {
+      "inputTokens": 1340,
+      "outputTokens": 2835,
+      "cacheReadTokens": 56891,
+      "cacheWriteTokens": 9486,
+      "costUsd": 0.07194610000000001
+    },
+    "costIsEquivalent": true,
+    "startedAt": "2026-11-03T03:21:50.916Z",
+    "durationMs": 22344
+  }
+}

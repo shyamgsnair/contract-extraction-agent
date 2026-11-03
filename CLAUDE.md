@@ -98,7 +98,8 @@ This is a personal side project, not client work. Use only public or synthetic c
 
 ## Current status
 
-- **Current phase:** Phase 2 (in progress). Step 2a (intake and page text) done; next is 2b (engines, verification, repair).
+- **Current phase:** Phase 3 (not started).
+- Phase 2 done: GO. With prompt v2 on the `claude-code` engine, overall accuracy is 96% (53 of 55 fields), the lowest field is 80%, and every quote was verified. The two misses (Arnet PO "deemed rejected", Trilogy price escalation) are borderline readings that vary between runs. v2 added requirements commitments to `minimumCommitment` after v1 missed SeraCare's 80% clause, so it was tuned on the test set. The `api` engine is written but has never been run; the paid demo run was skipped by choice. Reports are in `packages/agent/test-data/output/`.
 - Phase 0 done: workspace installs, type-checks and connects to Supabase.
 - Phase 1 done: 11-field Zod schema (`packages/agent/src/fields.ts`), 5 test contracts, 5 reviewed answer keys. Five contracts is a deliberate PoC choice; accuracy figures from them are indicative, not statistically solid.
 - Update this line at the end of each phase.
@@ -113,4 +114,6 @@ Run from the repo root. Secrets go in `.env` at the repo root (copy `.env.exampl
 - Database migrations: `pnpm --filter @cea/db generate` (create SQL from the schema), then `pnpm --filter @cea/db migrate` (apply it)
 - Check answer-key labels: `pnpm --filter @cea/agent check-labels`
 - Check intake (test contracts accepted, bad files rejected): `pnpm --filter @cea/agent check-intake`
-- Run extraction: TBD (Phase 2)
+- Run extraction (free, Pro plan): `pnpm --filter @cea/agent extract trilogy-flex.pdf` or `--all`. Results go to `packages/agent/test-data/output/`. Needs `claude` on the PATH, or `CLAUDE_BIN` in `.env`
+- Score results against the answer keys: `pnpm --filter @cea/agent score` (writes `test-data/output/accuracy-claude-code.md`; free-text judgements go in `test-data/judgments.json`)
+- The paid `api` engine also needs `--engine api --confirm-paid`. Run it only with my explicit OK

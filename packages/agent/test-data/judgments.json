@@ -1,0 +1,40 @@
+{
+  "arnet-isatori": {
+    "priceEscalation": {
+      "got": "Mutually agreed adjustments for spec/packaging changes and >5% materials cost changes, 90 days' written notice; annual increases capped at 10% per product per calendar year (excluding extraordinary raw material price changes)",
+      "correct": true
+    },
+    "minimumCommitment": {
+      "got": "Per-product minimum order quantities in Exhibit A (e.g., 2,500 tubs to 10,000 bottles); no overall purchase volume commitment",
+      "correct": true
+    }
+  },
+  "lannett-sino": {
+    "priceEscalation": {
+      "got": "After each anniversary of Commercial Launch, price may increase or decrease based on change in Supplier's COGS over the prior 12 months; good-faith renegotiation also possible",
+      "correct": true
+    }
+  },
+  "powin-stem": {
+    "priceEscalation": {
+      "got": "Fixed once PO accepted; annual adjustment each Jan 1 after the Pricing Period by change in US PPI for electrical equipment, capped at 4% in either direction",
+      "correct": true
+    }
+  },
+  "seracare-wyeth": {
+    "priceEscalation": {
+      "got": "Fixed for the term, except: prices drop to match lower prices SUPPLIER gives other customers; and prices may rise or fall with MANufacturer's labor/material costs, capped at the U.S. producer price index change",
+      "correct": true
+    },
+    "minimumCommitment": {
+      "got": "Wyeth shall purchase at least 80% of its human serum albumin requirements from SUPPLIER",
+      "correct": true
+    }
+  },
+  "trilogy-flex": {
+    "priceEscalation": {
+      "got": "Prices fixed per Exhibit A; Supplier may reduce prices at any time; no increase mechanism stated (price changes from Customer Change Orders by agreement)",
+      "correct": true
+    }
+  }
+}

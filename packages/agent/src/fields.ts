@@ -56,7 +56,7 @@ export const fieldValues = {
     .string()
     .min(1)
     .describe(
-      'Minimum order quantity or minimum purchase commitment, in a short phrase. Use "None" if the contract explicitly says there is no minimum; null if it is silent.',
+      'Minimum order quantity or minimum purchase commitment, in a short phrase. Requirements commitments count, e.g. "Customer shall purchase at least 80% of its requirements from Supplier". Use "None" if the contract explicitly says there is no minimum; null if it is silent.',
     ),
   poAcceptance: PoAcceptance.describe("How the vendor accepts or rejects purchase orders."),
 } as const;

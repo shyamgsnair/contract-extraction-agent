@@ -1,0 +1,161 @@
+{
+  "contract": "trilogy-flex.pdf",
+  "status": "extracted",
+  "result": {
+    "documentType": {
+      "value": "supply_agreement",
+      "quote": "THIS SUPPLY AGREEMENT (the “Agreement”) is made and entered into as of May 9, 2016",
+      "page": 1,
+      "confidence": "high"
+    },
+    "customerName": {
+      "value": "Flex Innovation Group LLC",
+      "quote": "by and between Flex Innovation Group LLC, having offices at 1044 Madison Avenue, No. 4F, New York, NY 10075 (“Customer”)",
+      "page": 1,
+      "confidence": "high"
+    },
+    "vendorName": {
+      "value": "Trilogy Essential Ingredients Inc.",
+      "quote": "Trilogy Essential Ingredients Inc., having offices at 1304 Continental Drive, Abingdon MD 21009 (“Supplier”)",
+      "page": 1,
+      "confidence": "high"
+    },
+    "effectiveDate": {
+      "value": "2016-05-09",
+      "quote": "is made and entered into as of May 9, 2016 (the “Effective Date”)",
+      "page": 1,
+      "confidence": "high"
+    },
+    "expirationDate": {
+      "value": null,
+      "quote": null,
+      "page": null,
+      "confidence": "high",
+      "note": "Only a duration is stated (two years from the Effective Date), not an explicit end date."
+    },
+    "autoRenews": {
+      "value": true,
+      "quote": "This Agreement will automatically renew for successive one (1) year terms, unless a Party provided written notice of non-renewal to the other Party not less than three (3) months prior to the end of the then-current term.",
+      "page": 12,
+      "confidence": "high"
+    },
+    "priceEscalation": {
+      "value": null,
+      "quote": null,
+      "page": null,
+      "confidence": "medium",
+      "note": "Prices are set in Exhibit A and Supplier may only reduce them (Section 5.1). No escalation mechanism is stated, and the contract does not explicitly say prices cannot rise."
+    },
+    "paymentTermsDays": {
+      "value": 30,
+      "quote": "all payments due hereunder to Supplier shall be made not later than thirty (30) days following the later of (a) Customer’s receipt of the applicable invoice or (b) Customer’s receipt and acceptance of the relevant batch of Product at its destination.",
+      "page": 8,
+      "confidence": "high"
+    },
+    "minimumCommitment": {
+      "value": "None",
+      "quote": "Customer shall have no minimum order commitments under this Agreement.",
+      "page": 3,
+      "confidence": "high"
+    },
+    "poAcceptance": {
+      "value": {
+        "days": 3,
+        "dayType": "business",
+        "ifNoResponse": "accepted"
+      },
+      "quote": "Within three (3) business days after its receipt of a purchase order placed pursuant to this Section 2.2, Supplier shall notify Customer of its acceptance or rejection (including reasons for rejection).",
+      "page": 3,
+      "confidence": "high"
+    },
+    "priceList": {
+      "value": [
+        {
+          "item": "G18817: Botanical Extract Blend 1A",
+          "unitPrice": 62.5,
+          "currency": "USD",
+          "unitOfMeasure": "kilogram",
+          "quote": "$62.50 per kilogram ($28.35 per pound)",
+          "page": 15,
+          "confidence": "high"
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "field": "documentType",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "customerName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "vendorName",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "effectiveDate",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "expirationDate",
+      "quote": "none",
+      "issues": []
+    },
+    {
+      "field": "autoRenews",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceEscalation",
+      "quote": "none",
+      "issues": []
+    },
+    {
+      "field": "paymentTermsDays",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "minimumCommitment",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "poAcceptance",
+      "quote": "verified",
+      "issues": []
+    },
+    {
+      "field": "priceList[0]",
+      "quote": "verified",
+      "issues": []
+    }
+  ],
+  "needsReview": false,
+  "issues": [],
+  "run": {
+    "engine": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "promptVersion": "v2",
+    "repairRounds": 0,
+    "usage": {
+      "inputTokens": 1338,
+      "outputTokens": 2028,
+      "cacheReadTokens": 37236,
+      "cacheWriteTokens": 30216,
+      "costUsd": 0.1448266
+    },
+    "costIsEquivalent": true,
+    "startedAt": "2026-11-03T03:23:05.889Z",
+    "durationMs": 16465
+  }
+}
