@@ -4,25 +4,25 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "This Master Supply Agreement (together with all exhibits, schedules, purchase orders, and annexes hereto, this",
-      "page": 2,
+      "quote": "MASTER SUPPLY AGREEMENT",
+      "page": 1,
       "confidence": "high"
     },
     "customerName": {
       "value": "Stem, Inc.",
-      "quote": "Stem, Inc., a company duly organized and existing under the laws of Delaware,",
-      "page": 2,
+      "quote": "Stem, Inc.",
+      "page": 1,
       "confidence": "high"
     },
     "vendorName": {
       "value": "Powin Energy Corporation",
-      "quote": "Energy Corporation, a Nevada corporation, with its principal place of business located at 20550 SW 115th Ave,",
-      "page": 2,
+      "quote": "Powin Energy Corporation",
+      "page": 1,
       "confidence": "high"
     },
     "effectiveDate": {
       "value": "2020-09-14",
-      "quote": "is made and entered into as of September 14, 2020 (“Agreement Effective Date”) by and among Powin",
+      "quote": "“Agreement”) is made and entered into as of September 14, 2020 (“Agreement Effective Date”) by and among Powin",
       "page": 2,
       "confidence": "high"
     },
@@ -31,18 +31,18 @@
       "quote": null,
       "page": null,
       "confidence": "medium",
-      "note": "Only a one-year duration is stated, no explicit end date."
+      "note": "Initial term is one year, but no end date is explicitly stated."
     },
     "autoRenews": {
       "value": false,
       "quote": "upon written agreement from both Parties.",
       "page": 13,
       "confidence": "medium",
-      "note": "Renewal terms require written agreement from both Parties, so there is no automatic renewal."
+      "note": "Renewal terms require written agreement from both parties; either party may also terminate at end of term on 3 months' notice."
     },
     "priceEscalation": {
-      "value": "Fixed once PO accepted; annual adjustment each Jan 1 after the Pricing Period by change in US PPI for electrical equipment, capped at 4% in either direction",
-      "quote": "3. Annual Pricing Adjustment. On January 1 of each calendar year after the Pricing Period, prices may be adjusted by the",
+      "value": "Annual adjustment each Jan 1 after the Pricing Period by change in U.S. PPI for electrical equipment, capped at 4% in either direction; otherwise fixed once PO accepted",
+      "quote": "percentage change in the U.S. Producer Price Index for electrical equipment over the prior twelve (12) months, provided that no",
       "page": 25,
       "confidence": "high"
     },
@@ -54,10 +54,9 @@
     },
     "minimumCommitment": {
       "value": "None",
-      "quote": "purchase commitment.",
+      "quote": "Customer's non-binding Order Volume Forecast for the Pricing Period is 200 MWh. Customer has no minimum",
       "page": 25,
-      "confidence": "high",
-      "note": "Full sentence spans a line break: 'Customer has no minimum purchase commitment.'"
+      "confidence": "high"
     },
     "poAcceptance": {
       "value": {
@@ -96,7 +95,7 @@
           "unitOfMeasure": "kWh AC Nameplate Capacity",
           "quote": "duration $315.00 per kWh $298.00 per kWh $285.00 per",
           "page": 25,
-          "confidence": "medium"
+          "confidence": "high"
         },
         {
           "item": "Battery Energy Storage System, 4-hour duration (cumulative volume up to 50 MWh)",
@@ -123,10 +122,10 @@
           "unitOfMeasure": "kWh AC Nameplate Capacity",
           "quote": "duration $289.00 per kWh $274.00 per kWh $262.00 per",
           "page": 25,
-          "confidence": "medium"
+          "confidence": "high"
         }
       ],
-      "note": "Prices apply to POs accepted through December 31, 2021 (Pricing Period)."
+      "note": "Prices apply to POs accepted through Dec 31, 2021; tiers based on cumulative volume."
     }
   },
   "checks": [
@@ -220,14 +219,14 @@
     "promptVersion": "v2",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1338,
-      "outputTokens": 3131,
-      "cacheReadTokens": 44094,
-      "cacheWriteTokens": 10431,
-      "costUsd": 0.0774119
+      "inputTokens": 1340,
+      "outputTokens": 3968,
+      "cacheReadTokens": 54496,
+      "cacheWriteTokens": 10024,
+      "costUsd": 0.0851981
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T03:22:13.787Z",
-    "durationMs": 20678
+    "startedAt": "2026-11-03T16:42:27.979Z",
+    "durationMs": 49039
   }
 }

@@ -4,7 +4,7 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "DISTRIBUTION AND SUPPLY AGREEMENT",
+      "quote": "THIS DISTRIBUTION AND SUPPLY AGREEMENT (this “Agreement”) is made this 2nd day of August, 2019 (the",
       "page": 1,
       "confidence": "high"
     },
@@ -22,7 +22,7 @@
     },
     "effectiveDate": {
       "value": "2019-08-02",
-      "quote": "is made this 2nd day of August, 2019 (the",
+      "quote": "THIS DISTRIBUTION AND SUPPLY AGREEMENT (this “Agreement”) is made this 2nd day of August, 2019 (the",
       "page": 1,
       "confidence": "high"
     },
@@ -35,13 +35,13 @@
     },
     "autoRenews": {
       "value": true,
-      "quote": "this Agreement shall automatically renew for renewal terms of one (1) year each unless either Party provides written notice to the",
+      "quote": "If neither Party is in default, in any material respect, of any of its obligations under this Agreement, then the Term of",
       "page": 21,
-      "confidence": "high",
-      "note": "Renewal applies if neither party is in material default and neither gives 180 days' notice of non-renewal."
+      "confidence": "medium",
+      "note": "Renews automatically for 1-year terms unless either party gives 180 days' notice, provided neither party is in material default."
     },
     "priceEscalation": {
-      "value": "After each anniversary of Commercial Launch, price may increase or decrease based on change in Supplier's COGS over the prior 12 months; good-faith renegotiation also possible",
+      "value": "Annual adjustment (up or down) after each anniversary of Commercial Launch based on change in Supplier's COGS over prior 12 months",
       "quote": "Following each anniversary of the Commercial Launch of the Product, the Pricing for",
       "page": 6,
       "confidence": "medium"
@@ -64,10 +64,9 @@
         "dayType": "business",
         "ifNoResponse": "accepted"
       },
-      "quote": "If such notification is not received by Lannett within five",
+      "quote": "(5) Business Days of receipt of such Purchase Order, the Purchase Order shall be deemed accepted. All accepted Purchased Orders",
       "page": 9,
-      "confidence": "high",
-      "note": "Continues: '(5) Business Days of receipt of such Purchase Order, the Purchase Order shall be deemed accepted.'"
+      "confidence": "high"
     },
     "priceList": {
       "value": [
@@ -150,13 +149,13 @@
     "repairRounds": 0,
     "usage": {
       "inputTokens": 1340,
-      "outputTokens": 2835,
-      "cacheReadTokens": 56891,
-      "cacheWriteTokens": 9486,
-      "costUsd": 0.07194610000000001
+      "outputTokens": 2807,
+      "cacheReadTokens": 59204,
+      "cacheWriteTokens": 10100,
+      "costUsd": 0.0743629
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T03:21:50.916Z",
-    "durationMs": 22344
+    "startedAt": "2026-11-03T16:41:48.898Z",
+    "durationMs": 35825
   }
 }

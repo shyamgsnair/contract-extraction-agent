@@ -4,25 +4,25 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "THIS SUPPLY AGREEMENT (the “Agreement”) is made and entered into as of May 9, 2016",
+      "quote": "THIS SUPPLY AGREEMENT (the “Agreement”) is made and entered into as of May 9, 2016 (the “Effective",
       "page": 1,
       "confidence": "high"
     },
     "customerName": {
       "value": "Flex Innovation Group LLC",
-      "quote": "by and between Flex Innovation Group LLC, having offices at 1044 Madison Avenue, No. 4F, New York, NY 10075 (“Customer”)",
+      "quote": "Date”) by and between Flex Innovation Group LLC, having offices at 1044 Madison Avenue, No. 4F, New York, NY",
       "page": 1,
       "confidence": "high"
     },
     "vendorName": {
       "value": "Trilogy Essential Ingredients Inc.",
-      "quote": "Trilogy Essential Ingredients Inc., having offices at 1304 Continental Drive, Abingdon MD 21009 (“Supplier”)",
+      "quote": "10075 (“Customer”), and Trilogy Essential Ingredients Inc., having offices at 1304 Continental Drive, Abingdon MD",
       "page": 1,
       "confidence": "high"
     },
     "effectiveDate": {
       "value": "2016-05-09",
-      "quote": "is made and entered into as of May 9, 2016 (the “Effective Date”)",
+      "quote": "THIS SUPPLY AGREEMENT (the “Agreement”) is made and entered into as of May 9, 2016 (the “Effective",
       "page": 1,
       "confidence": "high"
     },
@@ -31,11 +31,11 @@
       "quote": null,
       "page": null,
       "confidence": "high",
-      "note": "Only a duration is stated (two years from the Effective Date), not an explicit end date."
+      "note": "Only a duration (two years from the Effective Date) is stated, no explicit end date."
     },
     "autoRenews": {
       "value": true,
-      "quote": "This Agreement will automatically renew for successive one (1) year terms, unless a Party provided written notice of non-renewal to the other Party not less than three (3) months prior to the end of the then-current term.",
+      "quote": "automatically renew for successive one (1) year terms, unless a Party provided written notice of non-renewal to the other",
       "page": 12,
       "confidence": "high"
     },
@@ -44,17 +44,17 @@
       "quote": null,
       "page": null,
       "confidence": "medium",
-      "note": "Prices are set in Exhibit A and Supplier may only reduce them (Section 5.1). No escalation mechanism is stated, and the contract does not explicitly say prices cannot rise."
+      "note": "Section 5.1 only addresses price reductions; no escalation mechanism is stated."
     },
     "paymentTermsDays": {
       "value": 30,
-      "quote": "all payments due hereunder to Supplier shall be made not later than thirty (30) days following the later of (a) Customer’s receipt of the applicable invoice or (b) Customer’s receipt and acceptance of the relevant batch of Product at its destination.",
+      "quote": "be made not later than thirty (30) days following the later of (a) Customer’s receipt of the applicable invoice or (b)",
       "page": 8,
       "confidence": "high"
     },
     "minimumCommitment": {
       "value": "None",
-      "quote": "Customer shall have no minimum order commitments under this Agreement.",
+      "quote": "2.5 No Minimum Orders. Customer shall have no minimum order commitments under this Agreement.",
       "page": 3,
       "confidence": "high"
     },
@@ -64,7 +64,7 @@
         "dayType": "business",
         "ifNoResponse": "accepted"
       },
-      "quote": "Within three (3) business days after its receipt of a purchase order placed pursuant to this Section 2.2, Supplier shall notify Customer of its acceptance or rejection (including reasons for rejection).",
+      "quote": "purchase order shall be deemed to be accepted. Supplier shall not be permitted to reject any purchase order unless such",
       "page": 3,
       "confidence": "high"
     },
@@ -148,14 +148,14 @@
     "promptVersion": "v2",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1338,
-      "outputTokens": 2028,
-      "cacheReadTokens": 37236,
-      "cacheWriteTokens": 30216,
-      "costUsd": 0.1448266
+      "inputTokens": 1340,
+      "outputTokens": 1967,
+      "cacheReadTokens": 71190,
+      "cacheWriteTokens": 25210,
+      "costUsd": 0.1276015
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T03:23:05.889Z",
-    "durationMs": 16465
+    "startedAt": "2026-11-03T16:40:44.842Z",
+    "durationMs": 20542
   }
 }

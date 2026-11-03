@@ -4,7 +4,7 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "MANUFACTURING AND SUPPLY AGREEMENT",
+      "quote": "THIS MANUFACTURING AND SUPPLY AGREEMENT (the “Agreement”) is dated as of March 11, 2011,",
       "page": 1,
       "confidence": "high"
     },
@@ -16,7 +16,7 @@
     },
     "vendorName": {
       "value": "Arnet Pharmaceutical Corp.",
-      "quote": "and Arnet Pharmaceutical Corp. (“ARNET”), a Florida Corporation",
+      "quote": "Arnet Pharmaceutical Corp. (“ARNET”), a Florida Corporation",
       "page": 1,
       "confidence": "high"
     },
@@ -24,40 +24,40 @@
       "value": "2011-03-11",
       "quote": "is dated as of March 11, 2011, and is",
       "page": 1,
-      "confidence": "medium",
-      "note": "Term commences on 'the date hereof'; agreement dated March 11, 2011."
+      "confidence": "high"
     },
     "expirationDate": {
       "value": null,
       "quote": null,
       "page": null,
       "confidence": "high",
-      "note": "Only a 12-month duration is stated, no explicit end date."
+      "note": "Only a 12-month duration from the date of the agreement is stated, with no explicit end date."
     },
     "autoRenews": {
       "value": true,
       "quote": "Agreement shall automatically renew for additional and successive 12-month periods",
       "page": 8,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Either party can stop renewal by giving 90 days' notice before the end of the term."
     },
     "priceEscalation": {
-      "value": "Mutually agreed adjustments for spec/packaging changes and >5% materials cost changes, 90 days' written notice; annual increases capped at 10% per product per calendar year (excluding extraordinary raw material price changes)",
-      "quote": "Total annual price increases from ARNET to ISATORI cannot exceed 10% of original purchase price in one calendar year, for any one product, excluding extraordinary changes in raw material prices.",
+      "value": "Adjustments by mutual agreement for spec/packaging changes or materials cost changes over 5%, with 90 days' written notice; annual increases capped at 10% of original price per product, excluding extraordinary raw material changes",
+      "quote": "(iii) Total annual price increases from ARNET to ISATORI cannot exceed 10% of original purchase price in one calendar year, for any one product, excluding extraordinary changes in raw material prices.",
       "page": 1,
       "confidence": "medium"
     },
     "paymentTermsDays": {
       "value": 60,
-      "quote": "Payment terms for all quantities of the Products purchased hereunder shall be Net Sixty (60) days from the date of shipment from manufacturer.",
+      "quote": "Payment terms for all quantities of the Products purchased hereunder shall be Net Sixty (60) days",
       "page": 1,
       "confidence": "high"
     },
     "minimumCommitment": {
-      "value": "Per-product minimum order quantities in Exhibit A (e.g., 2,500 tubs to 10,000 bottles); no overall purchase volume commitment",
-      "quote": "Pre-Workout Energy Capsules 60-count bottle $2.85 per bottle 5,000 bottles 40,000 bottles No",
+      "value": "Per-product minimum order quantities in Exhibit A (e.g., 2,500 tubs of Whey Protein Isolate Powder, Vanilla 2 lb); no overall purchase volume commitment",
+      "quote": "Vanilla 2 lb tub $9.75 per tub 2,500 tubs 20,000 tubs No",
       "page": 18,
       "confidence": "medium",
-      "note": "Section 2(b) says ISATORI makes no representations regarding quantities it will order."
+      "note": "Section 2(b) says ISATORI makes no representations on quantities it will order."
     },
     "poAcceptance": {
       "value": {
@@ -67,7 +67,8 @@
       },
       "quote": "ARNET shall have five (5) business days to accept or reject any purchase order, in writing.",
       "page": 1,
-      "confidence": "medium"
+      "confidence": "medium",
+      "note": "If not accepted in time, the contract says only that the orders \"may be manufactured elsewhere\"; it does not say deemed accepted or rejected."
     },
     "priceList": {
       "value": [
@@ -206,13 +207,13 @@
     "repairRounds": 0,
     "usage": {
       "inputTokens": 1338,
-      "outputTokens": 2876,
-      "cacheReadTokens": 29131,
-      "cacheWriteTokens": 31037,
-      "costUsd": 0.1557801
+      "outputTokens": 2905,
+      "cacheReadTokens": 37688,
+      "cacheWriteTokens": 22427,
+      "costUsd": 0.12248579999999999
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T03:21:28.984Z",
-    "durationMs": 21482
+    "startedAt": "2026-11-03T16:41:16.446Z",
+    "durationMs": 29982
   }
 }

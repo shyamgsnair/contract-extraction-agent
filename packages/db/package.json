@@ -8,9 +8,11 @@
     "typecheck": "tsc -p tsconfig.json",
     "check": "node --env-file-if-exists=../../.env src/check-connection.ts",
     "generate": "node --env-file=../../.env node_modules/drizzle-kit/bin.cjs generate",
-    "migrate": "node --env-file=../../.env node_modules/drizzle-kit/bin.cjs migrate"
+    "migrate": "node --env-file=../../.env node_modules/drizzle-kit/bin.cjs migrate",
+    "summary": "node --env-file-if-exists=../../.env src/summary.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "drizzle-orm": "^0.45.4",
     "postgres": "^4.0.0"
   },
