@@ -21,14 +21,15 @@ This is a personal side project, not client work. Use only public or synthetic c
 | Language | TypeScript everywhere |
 | Repo | pnpm workspace: `packages/agent` (extraction agent), `packages/db` (Drizzle schema, migrations and client, shared by the CLI and web app) and `apps/web` (Next.js app, created in Phase 4) |
 | Front end | Next.js (App Router), Tailwind CSS, shadcn/ui |
-| Extraction agent | Standalone, reusable TypeScript package (`packages/agent`). Exposes one entry point, `extractContract`, that the CLI, web app and background job all call. Two interchangeable engines: `claude-code` (Claude Code headless, `claude -p`, on the Pro plan; used for all development, $0) and `api` (Anthropic TypeScript SDK `@anthropic-ai/sdk`; used only for the demo run) |
+| Extraction agent | Standalone, reusable TypeScript package (`packages/agent`). Exposes one entry point, `extractContract`, that the CLI, web app and background job all call. Two interchangeable engines: `claude-code` (Claude Code headless, `claude -p`, on the Pro plan; used for all development and the local web app, $0) and `api` (Anthropic TypeScript SDK `@anthropic-ai/sdk`; written but optional, run only if we choose a paid demo run or a public deploy) |
+| Hosting | Local by default: the web app runs on my Mac (`localhost`) and calls the `claude-code` engine, so there is no API cost. A public deploy (Vercel) would need the `api` engine and is optional |
 | AI model | Claude Sonnet 5.5 (`claude-sonnet-5-5`), set through config so it can be changed |
 | Schema and validation | Zod. The field list is defined once and drives the AI tool schema, validation and UI types |
 | Database | Supabase Postgres |
 | Database access | Drizzle ORM, with SQL migrations kept in the repo |
 | File storage and login | Supabase Storage (original PDFs) and Supabase Auth (reviewers) |
 | PDF text | `unpdf` for page-by-page text |
-| Later phases | Inngest for background jobs, Vercel for hosting (confirm when we get there) |
+| Later phases | Inngest for background jobs (local dev server); Vercel only if we opt into a public deploy |
 
 ## Scope rules
 
@@ -89,10 +90,10 @@ This is a personal side project, not client work. Use only public or synthetic c
 | --- | --- | --- |
 | 0. Setup | pnpm workspace, shared TypeScript config, `.env.example`, Drizzle connected to Supabase | Repo installs cleanly and Drizzle connects to Supabase |
 | 1. Field list and test set | Final field list as a Zod schema; 5 EDGAR supply contracts (redacted prices replaced with synthetic values), all labeled as the answer key | Field list agreed and labeled test set in `packages/agent/test-data` |
-| 2. Extraction agent | Intake checks, page text, `claude-code` and `api` engines, verification, repair rounds, CLI that writes JSON, accuracy scoring script, one approved `api` demo run | Runs on all test contracts and reports per-field accuracy (go/no-go point). Go if overall accuracy is at least 85%, no field is below 60%, and every quote is verified or flagged |
+| 2. Extraction agent | Intake checks, page text, `claude-code` and `api` engines, verification, repair rounds, CLI that writes JSON, accuracy scoring script. Optional: one approved `api` demo run | Runs on all test contracts and reports per-field accuracy (go/no-go point). Go if overall accuracy is at least 85%, no field is below 60%, and every quote is verified or flagged |
 | 3. Save to Supabase | Drizzle tables `documents`, `contracts`, `extracted_fields`, `extraction_runs`; PDFs uploaded to Storage; `--save` CLI option; duplicate detection by file hash | CLI run fills the tables and they can be queried in Supabase |
 | 4. Web app | Login, upload page (drag-and-drop, intake checks, processing status), contract table (filter and sort by extracted fields; click a value to open the PDF at its highlighted quote), review screen (PDF beside the fields, approve or correct) | A contract can be uploaded, found by its fields, traced to its source quote, and reviewed end to end in the browser |
-| 5. Background jobs and deploy | Extraction as an Inngest job with status in the UI; deploy to Vercel | Runs from a public URL |
+| 5. Background jobs | Extraction as an Inngest job (local dev server) with status in the UI. Optional: public deploy to Vercel using the `api` engine (needs my OK, since it costs money) | Uploads run as background jobs in the local app, with live status. If deployed: runs from a public URL |
 | 6. Demo extras (optional) | Renewal-deadline dashboard; contract price vs. invoice variance view; optionally wrap the agent as a Claude Agent Skill or MCP server | Demo-ready |
 
 ## Current status
