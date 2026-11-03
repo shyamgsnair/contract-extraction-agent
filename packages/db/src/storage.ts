@@ -21,6 +21,16 @@ export function createStorage(supabaseUrl: string, secretKey: string) {
   }
 
   return {
+    /** A short-lived link to a private PDF, so the browser can display it without the bucket being public. */
+    async signedUrl(path: string, expiresInSeconds = 600): Promise<string> {
+      const { data, error } = await supabase.storage.from(BUCKET).createSignedUrl(path, expiresInSeconds);
+      if (error) throw new Error(`Could not create a link for ${path}: ${error.message}`);
+      return data.signedUrl;
+    },
+    async removePdf(path: string): Promise<void> {
+      const { error } = await supabase.storage.from(BUCKET).remove([path]);
+      if (error) throw new Error(`Could not delete ${path}: ${error.message}`);
+    },
     /** Confirms the key works and the bucket exists (creating it if needed). Call before slow work. */
     check: ensureBucket,
     /** Uploads a PDF and returns its path in the bucket. Re-uploading the same path overwrites it. */

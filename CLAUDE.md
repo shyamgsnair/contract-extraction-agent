@@ -29,7 +29,7 @@ This is a personal side project, not client work. Use only public or synthetic c
 | Database access | Drizzle ORM, with SQL migrations kept in the repo |
 | File storage and login | Supabase Storage (original PDFs) and Supabase Auth (reviewers) |
 | PDF text | `unpdf` for page-by-page text |
-| Later phases | Inngest for background jobs (local dev server); Vercel only if we opt into a public deploy |
+| Later (to do list) | Inngest for background jobs (local dev server); Vercel only if we opt into a public deploy |
 
 ## Scope rules
 
@@ -93,13 +93,35 @@ This is a personal side project, not client work. Use only public or synthetic c
 | 2. Extraction agent | Intake checks, page text, `claude-code` and `api` engines, verification, repair rounds, CLI that writes JSON, accuracy scoring script. Optional: one approved `api` demo run | Runs on all test contracts and reports per-field accuracy (go/no-go point). Go if overall accuracy is at least 85%, no field is below 60%, and every quote is verified or flagged |
 | 3. Save to Supabase | Drizzle tables `documents`, `contracts`, `extracted_fields`, `extraction_runs`; PDFs uploaded to Storage; `--save` CLI option; duplicate detection by file hash | CLI run fills the tables and they can be queried in Supabase |
 | 4. Web app | Login, upload page (drag-and-drop, intake checks, processing status), contract table (filter and sort by extracted fields; click a value to open the PDF at its highlighted quote), review screen (PDF beside the fields, approve or correct) | A contract can be uploaded, found by its fields, traced to its source quote, and reviewed end to end in the browser |
-| 5. Background jobs | Extraction as an Inngest job (local dev server) with status in the UI. Optional: public deploy to Vercel using the `api` engine (needs my OK, since it costs money) | Uploads run as background jobs in the local app, with live status. If deployed: runs from a public URL |
-| 6. Demo extras (optional) | Renewal-deadline dashboard; contract price vs. invoice variance view; optionally wrap the agent as a Claude Agent Skill or MCP server | Demo-ready |
+| 5. Demo extras | Renewal-deadline dashboard; contract price vs. invoice variance view; optionally wrap the agent as a Claude Agent Skill or MCP server | Demo-ready |
+| 6. Later | The items in "To do (later)" below, picked one at a time, each with its own plan and approval | Each item's own check |
+
+## To do (later)
+
+Deferred work. None of it is needed for the local PoC; pick items one at a time.
+
+- [ ] **Background jobs with Inngest.** Move extraction from `after()` into an Inngest job on its local dev server. This adds retries, and runs that survive a server restart (today a restart leaves a run "stalled"). Status in the UI stays the same.
+- [ ] **Public deploy to Vercel.** This needs the paid `api` engine, because Vercel can't use my Pro login. It also needs my explicit OK, since it costs money.
+- [ ] **One paid `api` demo run (step 2d).** First a free `count_tokens` cost estimate and a spend cap in the Console, then the run with my explicit OK.
+- [x] **Put `claude` on the PATH.** Done: `claude install` put it in `~/.local/bin`, which is added to the PATH in `~/.zshrc`.
+- [ ] **Re-extract from the web app.** A button on the review screen, the same as `extract --force`, for a new prompt version.
+- [ ] **Clean up stalled runs.** Mark runs left "running" by a server restart as failed, with a retry button.
+- [ ] **Bigger test set.** More than 5 contracts, plus an amendment, an SOW and an order form, with answer keys labeled independently of Claude's drafts, so accuracy figures are less biased.
+- [ ] **Tighter quote highlighting.** Highlight the exact words, not whole text lines, and handle quotes that run across a page break.
+- [ ] **Look and feel polish**, building on the Debits & Deploy branding.
 
 ## Current status
 
-- **Current phase:** Phase 4 (not started).
-- Phase 3 done. There are four tables (`documents`, `extraction_runs`, `contracts`, `extracted_fields`), with row-level security on and no policies yet; Phase 4 adds the policies. PDFs are in the private Storage bucket `contracts`, named by SHA-256. `extract --save` skips duplicates without calling Claude. The 5 test contracts are saved.
+- **Current phase:** Phase 5, demo extras (not started). Background jobs and the deploy moved to "To do (later)".
+- Phase 4 done. The web app (`apps/web`, Next.js 16 with Cache Components) runs at `localhost:3001`. It has:
+  - Supabase Auth email/password login; public sign-up is off, and accounts are created in the dashboard
+  - the contract table, with filters, sort and column choice
+  - the review screen, with the PDF beside the fields: click a field to highlight its quote; approve, correct or approve all; corrections are kept beside the extracted value
+  - upload with drag-and-drop, intake checks and duplicate detection; extraction runs in the background through `after()` on the `claude-code` engine, with live status
+  - Debits & Deploy branding
+
+  Only server code touches the database and Storage, after checking the session, and PDFs open through signed links. So RLS stays on with **no policies**, which keeps Supabase's public API closed.
+- Phase 3 done. There are four tables (`documents`, `extraction_runs`, `contracts`, `extracted_fields`), with row-level security on. PDFs are in the private Storage bucket `contracts`, named by SHA-256. `extract --save` skips duplicates without calling Claude. The 5 test contracts are saved.
 - Phase 2 done: GO. With prompt v2 on the `claude-code` engine, overall accuracy is 96% (53 of 55 fields), the lowest field is 80%, and every quote was verified. The two misses (Arnet PO "deemed rejected", Trilogy price escalation) are borderline readings that vary between runs. v2 added requirements commitments to `minimumCommitment` after v1 missed SeraCare's 80% clause, so it was tuned on the test set. The `api` engine is written but has never been run; the paid demo run was skipped by choice. Reports are in `packages/agent/test-data/output/`.
 - Phase 0 done: workspace installs, type-checks and connects to Supabase.
 - Phase 1 done: 11-field Zod schema (`packages/agent/src/fields.ts`), 5 test contracts, 5 reviewed answer keys. Five contracts is a deliberate PoC choice; accuracy figures from them are indicative, not statistically solid.
@@ -113,9 +135,11 @@ Run from the repo root. Secrets go in `.env` at the repo root (copy `.env.exampl
 - Type-check: `pnpm typecheck`
 - Check database connection: `pnpm db:check`
 - Show what is saved (counts, contracts, runs, evidence, RLS): `pnpm db:summary`
+- Delete an uploaded document and everything about it (dev only): `pnpm --filter @cea/db delete-document <file name>`
+- Web app: `pnpm dev`, then open http://localhost:3001. This needs `SUPABASE_PUBLISHABLE_KEY` in `.env`, and `claude` on the PATH for uploads
 - Database migrations: `pnpm --filter @cea/db generate` (create SQL from the schema), then `pnpm --filter @cea/db migrate` (apply it)
 - Check answer-key labels: `pnpm --filter @cea/agent check-labels`
 - Check intake (test contracts accepted, bad files rejected): `pnpm --filter @cea/agent check-intake`
-- Run extraction (free, Pro plan): `pnpm --filter @cea/agent extract trilogy-flex.pdf` or `--all`. Results go to `packages/agent/test-data/output/`. Needs `claude` on the PATH, or `CLAUDE_BIN` in `.env`. Add `--save` to store the results in Supabase (this needs `SUPABASE_URL` and `SUPABASE_SECRET_KEY`), and `--force` to re-extract a file that's already saved
+- Run extraction (free, Pro plan): `pnpm --filter @cea/agent extract trilogy-flex.pdf` or `--all`. Results go to `packages/agent/test-data/output/`. Uses `claude` from the PATH (`~/.local/bin/claude`); `CLAUDE_BIN` in `.env` overrides it. Add `--save` to store the results in Supabase (this needs `SUPABASE_URL` and `SUPABASE_SECRET_KEY`), and `--force` to re-extract a file that's already saved
 - Score results against the answer keys: `pnpm --filter @cea/agent score` (writes `test-data/output/accuracy-claude-code.md`; free-text judgements go in `test-data/judgments.json`)
 - The paid `api` engine also needs `--engine api --confirm-paid`. Run it only with my explicit OK

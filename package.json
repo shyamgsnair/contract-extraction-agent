@@ -9,7 +9,8 @@
   "scripts": {
     "typecheck": "pnpm -r typecheck",
     "db:check": "pnpm --filter @cea/db check",
-    "db:summary": "pnpm --filter @cea/db summary"
+    "db:summary": "pnpm --filter @cea/db summary",
+    "dev": "pnpm --filter @cea/web dev"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

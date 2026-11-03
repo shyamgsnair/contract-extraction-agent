@@ -1,5 +1,5 @@
 import { ExtractionResult, fieldNames } from "./fields.ts";
-import { normalize } from "./pdf-text.ts";
+import { normalize, squash } from "./text.ts";
 
 // Verification runs in code, never by the model. Every problem found here is sent back to Claude in a repair round;
 // anything still failing after the last round is flagged for human review.
@@ -108,10 +108,6 @@ export function quoteOnPage(quote: string, pages: string[], page: number): boole
     (here + squash(pages[page] ?? "")).includes(q) ||
     (squash(pages[page - 2] ?? "") + here).includes(q)
   );
-}
-
-function squash(text: string): string {
-  return normalize(text).toLowerCase().replace(/\s+/g, "");
 }
 
 function quoteShowsPrice(quote: string, price: number): boolean {

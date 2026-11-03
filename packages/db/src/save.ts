@@ -65,41 +65,64 @@ export async function createDocument(
   return row!;
 }
 
-/** Saves a run, its field evidence and the document's current values, all in one transaction. Returns the run id. */
-export async function saveExtraction(db: Db, documentId: string, extraction: Extraction): Promise<string> {
+/** Creates a run in status "running", for callers that show progress (the web app). Returns its id. */
+export async function startRun(db: Db, documentId: string, run: RunInfo): Promise<string> {
+  const [row] = await db
+    .insert(extractionRuns)
+    .values({
+      documentId,
+      status: "running",
+      engine: run.engine,
+      model: run.model,
+      effort: run.effort,
+      promptVersion: run.promptVersion,
+      startedAt: new Date(run.startedAt),
+    })
+    .returning({ id: extractionRuns.id });
+  return row!.id;
+}
+
+/**
+ * Saves a run, its field evidence and the document's current values, all in one transaction. Returns the run id.
+ * Pass `runId` to complete a run created with startRun; otherwise a new run row is inserted.
+ */
+export async function saveExtraction(db: Db, documentId: string, extraction: Extraction, runId?: string): Promise<string> {
   const { result, checks, needsReview, issues, run } = extraction;
   return db.transaction(async (tx) => {
-    const [runRow] = await tx
-      .insert(extractionRuns)
-      .values({
-        documentId,
-        status: "succeeded",
-        engine: run.engine,
-        model: run.model,
-        effort: run.effort,
-        promptVersion: run.promptVersion,
-        needsReview,
-        repairRounds: run.repairRounds,
-        inputTokens: run.usage.inputTokens,
-        outputTokens: run.usage.outputTokens,
-        cacheReadTokens: run.usage.cacheReadTokens,
-        cacheWriteTokens: run.usage.cacheWriteTokens,
-        costUsd: run.usage.costUsd,
-        costIsEquivalent: run.costIsEquivalent,
-        issues,
-        startedAt: new Date(run.startedAt),
-        durationMs: run.durationMs,
-      })
-      .returning({ id: extractionRuns.id });
-    const runId = runRow!.id;
+    const runValues = {
+      documentId,
+      status: "succeeded" as const,
+      engine: run.engine,
+      model: run.model,
+      effort: run.effort,
+      promptVersion: run.promptVersion,
+      needsReview,
+      repairRounds: run.repairRounds,
+      inputTokens: run.usage.inputTokens,
+      outputTokens: run.usage.outputTokens,
+      cacheReadTokens: run.usage.cacheReadTokens,
+      cacheWriteTokens: run.usage.cacheWriteTokens,
+      costUsd: run.usage.costUsd,
+      costIsEquivalent: run.costIsEquivalent,
+      issues,
+      startedAt: new Date(run.startedAt),
+      durationMs: run.durationMs,
+    };
+    if (runId) {
+      await tx.update(extractionRuns).set(runValues).where(eq(extractionRuns.id, runId));
+    } else {
+      const [runRow] = await tx.insert(extractionRuns).values(runValues).returning({ id: extractionRuns.id });
+      runId = runRow!.id;
+    }
+    const savedRunId = runId;
 
     if (result) {
-      const fieldRows = fieldEvidence(result, checks).map((row) => ({ ...row, runId }));
+      const fieldRows = fieldEvidence(result, checks).map((row) => ({ ...row, runId: savedRunId }));
       if (fieldRows.length > 0) await tx.insert(extractedFields).values(fieldRows);
     }
 
     const values = {
-      latestRunId: runId,
+      latestRunId: savedRunId,
       documentType: result?.documentType.value ?? null,
       customerName: result?.customerName.value ?? null,
       vendorName: result?.vendorName.value ?? null,
@@ -113,21 +136,30 @@ export async function saveExtraction(db: Db, documentId: string, extraction: Ext
       poAcceptanceDayType: result?.poAcceptance.value?.dayType ?? null,
       poIfNoResponse: result?.poAcceptance.value?.ifNoResponse ?? null,
       needsReview,
+      reviewStatus: "pending" as const, // a new extraction needs a fresh review
       updatedAt: new Date(),
     };
     await tx
       .insert(contracts)
       .values({ documentId, ...values })
       .onConflictDoUpdate({ target: contracts.documentId, set: values });
-    return runId;
+    return savedRunId;
   });
 }
 
-/** Records a run that threw before producing a result, so failures are visible rather than silently missing. */
-export async function saveFailedRun(db: Db, documentId: string, run: RunInfo & { durationMs: number; error: string }) {
-  await db.insert(extractionRuns).values({
+/**
+ * Records a run that threw before producing a result, so failures are visible rather than silently missing.
+ * Pass `runId` to mark a run created with startRun as failed.
+ */
+export async function saveFailedRun(
+  db: Db,
+  documentId: string,
+  run: RunInfo & { durationMs: number; error: string },
+  runId?: string,
+) {
+  const values = {
     documentId,
-    status: "failed",
+    status: "failed" as const,
     engine: run.engine,
     model: run.model,
     effort: run.effort,
@@ -135,7 +167,9 @@ export async function saveFailedRun(db: Db, documentId: string, run: RunInfo & {
     startedAt: new Date(run.startedAt),
     durationMs: run.durationMs,
     error: run.error,
-  });
+  };
+  if (runId) await db.update(extractionRuns).set(values).where(eq(extractionRuns.id, runId));
+  else await db.insert(extractionRuns).values(values);
 }
 
 function fieldEvidence(result: ExtractedContract, checks: FieldCheck[]) {

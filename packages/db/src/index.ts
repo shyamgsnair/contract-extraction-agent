@@ -3,8 +3,9 @@ import postgres from "postgres";
 import * as schema from "./schema.ts";
 
 // Creates a Drizzle client. Callers pass the URL so this package never reads env vars itself.
-export function createDb(databaseUrl: string) {
-  const client = postgres(databaseUrl, { max: 1 });
+// `max` is the connection pool size: 1 for scripts, a few for the web app.
+export function createDb(databaseUrl: string, { max = 1 }: { max?: number } = {}) {
+  const client = postgres(databaseUrl, { max });
   return { db: drizzle(client, { schema, casing: "snake_case" }), close: () => client.end() };
 }
 

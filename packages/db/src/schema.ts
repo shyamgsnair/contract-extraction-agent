@@ -23,7 +23,7 @@ export const extractionRuns = pgTable(
     documentId: uuid()
       .notNull()
       .references(() => documents.id, { onDelete: "cascade" }),
-    status: text({ enum: ["succeeded", "failed"] }).notNull(),
+    status: text({ enum: ["running", "succeeded", "failed"] }).notNull(),
     engine: text({ enum: ["claude-code", "api"] }).notNull(),
     model: text().notNull(),
     effort: text(),
@@ -67,6 +67,8 @@ export const contracts = pgTable("contracts", {
   poAcceptanceDayType: text({ enum: ["business", "calendar"] }),
   poIfNoResponse: text({ enum: ["accepted", "rejected", "not_stated"] }),
   needsReview: boolean().notNull(),
+  /** "approved" once a reviewer has approved or corrected every field of the latest run. */
+  reviewStatus: text({ enum: ["pending", "approved"] }).notNull().default("pending"),
   updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 }).enableRLS();
 
@@ -89,6 +91,13 @@ export const extractedFields = pgTable(
     quoteStatus: text({ enum: ["verified", "not_found", "none"] }).notNull(),
     issues: jsonb().$type<string[]>().notNull().default([]),
     note: text(),
+    // Human review. The extracted value above is never overwritten; a correction is stored beside it.
+    reviewStatus: text({ enum: ["pending", "approved", "corrected"] }).notNull().default("pending"),
+    correctedValue: jsonb(),
+    /** Supabase Auth user id and email of the reviewer. */
+    reviewedBy: uuid(),
+    reviewedByEmail: text(),
+    reviewedAt: timestamp({ withTimezone: true }),
   },
   (t) => [index().on(t.runId)],
 ).enableRLS();
