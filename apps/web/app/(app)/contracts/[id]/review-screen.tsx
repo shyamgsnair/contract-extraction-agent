@@ -47,7 +47,12 @@ export function ReviewScreen({ contract, initialField }: { contract: ContractDet
   function run(action: () => Promise<ActionResult>, after?: () => void) {
     setError(null);
     startTransition(async () => {
-      const result = await action();
+      let result: ActionResult;
+      try {
+        result = await action();
+      } catch {
+        result = { ok: false, error: "Something went wrong saving this review. Refresh the page and try again." };
+      }
       if (!result.ok) setError(result.error);
       else {
         after?.();
@@ -72,7 +77,10 @@ export function ReviewScreen({ contract, initialField }: { contract: ContractDet
         {contract.run && (
           <span className="text-xs text-muted-foreground">
             Extracted {new Date(contract.run.startedAt).toLocaleDateString()} · {contract.run.model} · prompt{" "}
-            {contract.run.promptVersion} · {contract.run.repairRounds ?? 0} repair round(s)
+            {contract.run.promptVersion} · {contract.run.repairRounds ?? 0} repair round(s) ·{" "}
+            <Link href={`/runs/${contract.run.id}`} className="underline hover:text-foreground">
+              Claude log
+            </Link>
           </span>
         )}
         <Button

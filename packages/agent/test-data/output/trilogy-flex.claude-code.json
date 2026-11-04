@@ -16,9 +16,10 @@
     },
     "vendorName": {
       "value": "Trilogy Essential Ingredients Inc.",
-      "quote": "10075 (“Customer”), and Trilogy Essential Ingredients Inc., having offices at 1304 Continental Drive, Abingdon MD",
+      "quote": "THIS SUPPLY AGREEMENT (the “Agreement”) is made and entered into as of May 9, 2016 (the “Effective",
       "page": 1,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Name appears on the following line of the parties clause: 'Trilogy Essential Ingredients Inc., having offices at 1304 Continental Drive'."
     },
     "effectiveDate": {
       "value": "2016-05-09",
@@ -30,8 +31,8 @@
       "value": null,
       "quote": null,
       "page": null,
-      "confidence": "high",
-      "note": "Only a duration (two years from the Effective Date) is stated, no explicit end date."
+      "confidence": "medium",
+      "note": "Initial term is two years from the Effective Date (a duration only); no end date is stated."
     },
     "autoRenews": {
       "value": true,
@@ -44,7 +45,7 @@
       "quote": null,
       "page": null,
       "confidence": "medium",
-      "note": "Section 5.1 only addresses price reductions; no escalation mechanism is stated."
+      "note": "No price-increase mechanism is stated. Section 5.1 only lets Supplier reduce prices, and Section 4.2(b) allows price changes by agreement for Customer Change Orders."
     },
     "paymentTermsDays": {
       "value": 30,
@@ -64,7 +65,7 @@
         "dayType": "business",
         "ifNoResponse": "accepted"
       },
-      "quote": "purchase order shall be deemed to be accepted. Supplier shall not be permitted to reject any purchase order unless such",
+      "quote": "rejection). If within such time period Supplier does not provide notice of acceptance or rejection to Customer, then the",
       "page": 3,
       "confidence": "high"
     },
@@ -145,17 +146,17 @@
     "engine": "claude-code",
     "model": "claude-sonnet-5-5",
     "effort": "medium",
-    "promptVersion": "v2",
+    "promptVersion": "v3",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1340,
-      "outputTokens": 1967,
-      "cacheReadTokens": 71190,
-      "cacheWriteTokens": 25210,
-      "costUsd": 0.1276015
+      "inputTokens": 1353,
+      "outputTokens": 2037,
+      "cacheReadTokens": 72348,
+      "cacheWriteTokens": 47723,
+      "costUsd": 0.2184535
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T16:40:44.842Z",
-    "durationMs": 20542
+    "startedAt": "2026-11-04T14:24:41.411Z",
+    "durationMs": 21221
   }
 }

@@ -3,7 +3,9 @@ import { ExtractionResult, fieldNames, fieldValues, PoAcceptance, PriceRowValue 
 
 // Bump this whenever the instructions below change, so run records show which prompt produced a result.
 // v2: minimumCommitment also covers requirements commitments ("at least X% of its requirements").
-export const PROMPT_VERSION = "v2";
+// v3 (claude-code engine): read the whole PDF in one Read call. Page ranges need the pdftoppm tool, which was
+//     missing, so v2 runs silently fell back to the page text and never saw the PDF itself.
+export const PROMPT_VERSION = "v3";
 
 /** The extraction schema as JSON Schema, for Claude Code's structured output and the API's submit tool. */
 export function extractionJsonSchema(): Record<string, unknown> {

@@ -41,7 +41,12 @@ export function RecentUploads({ rows }: { rows: UploadRow[] }) {
               <TableCell>
                 <StatusBadge row={r} />
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="space-x-3 text-right">
+                {r.runId && (
+                  <Link href={`/runs/${r.runId}`} className="text-sm text-muted-foreground underline hover:text-foreground">
+                    Log
+                  </Link>
+                )}
                 {r.contractId && (r.status === "to_review" || r.status === "flagged") && (
                   <Link href={`/contracts/${r.contractId}`} className="text-sm text-brand-deep underline">
                     Review

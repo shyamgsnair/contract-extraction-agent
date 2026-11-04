@@ -25,7 +25,7 @@ export async function approveField(contractId: string, fieldId: string): Promise
       .set(reviewedBy(user, "approved", null))
       .where(eq(extractedFields.id, fieldId));
     // Approving after a correction restores the extracted value in the contract table.
-    await tx.update(contracts).set(contractColumns(target.field, target.value)).where(eq(contracts.id, contractId));
+    await updateContractColumns(tx, contractId, contractColumns(target.field, target.value));
   });
   await refreshReviewStatus(contractId, target.runId);
   return { ok: true };
@@ -52,7 +52,7 @@ export async function correctField(contractId: string, fieldId: string, value: u
       .update(extractedFields)
       .set(reviewedBy(user, "corrected", parsed.data))
       .where(eq(extractedFields.id, fieldId));
-    await tx.update(contracts).set(contractColumns(target.field, parsed.data)).where(eq(contracts.id, contractId));
+    await updateContractColumns(tx, contractId, contractColumns(target.field, parsed.data));
   });
   await refreshReviewStatus(contractId, target.runId);
   return { ok: true };
@@ -107,6 +107,14 @@ function contractColumns(field: string, value: unknown): Partial<typeof contract
     default:
       return {};
   }
+}
+
+type Tx = Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0];
+
+/** Updates the contract table's columns for a field. Price rows have no column there, so there is nothing to update. */
+async function updateContractColumns(tx: Tx, contractId: string, values: Partial<typeof contracts.$inferInsert>) {
+  if (Object.keys(values).length === 0) return;
+  await tx.update(contracts).set(values).where(eq(contracts.id, contractId));
 }
 
 /** A contract is approved once no field of its latest run is still pending. */

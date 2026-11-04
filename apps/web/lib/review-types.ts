@@ -28,6 +28,7 @@ export type ContractDetail = {
   needsReview: boolean;
   reviewStatus: "pending" | "approved";
   run: {
+    id: string;
     engine: string;
     model: string;
     promptVersion: string;

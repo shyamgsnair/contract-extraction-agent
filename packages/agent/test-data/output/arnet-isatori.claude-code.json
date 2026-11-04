@@ -4,45 +4,45 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "THIS MANUFACTURING AND SUPPLY AGREEMENT (the “Agreement”) is dated as of March 11, 2011,",
+      "quote": "THIS MANUFACTURING AND SUPPLY AGREEMENT (the “Agreement”) is dated as of March 11, 2011, and is",
       "page": 1,
       "confidence": "high"
     },
     "customerName": {
       "value": "iSatori Technologies, LLC",
-      "quote": "between iSatori Technologies, LLC (“ISATORI”) a Colorado corporation",
+      "quote": "between iSatori Technologies, LLC (“ISATORI”) a Colorado corporation doing business at 15000 West 6th Ave Suite 202, Golden,",
       "page": 1,
       "confidence": "high"
     },
     "vendorName": {
       "value": "Arnet Pharmaceutical Corp.",
-      "quote": "Arnet Pharmaceutical Corp. (“ARNET”), a Florida Corporation",
+      "quote": "CO 80401 and Arnet Pharmaceutical Corp. (“ARNET”), a Florida Corporation doing business at 2525 Davie Road, Suite 330,",
       "page": 1,
       "confidence": "high"
     },
     "effectiveDate": {
       "value": "2011-03-11",
-      "quote": "is dated as of March 11, 2011, and is",
+      "quote": "THIS MANUFACTURING AND SUPPLY AGREEMENT (the “Agreement”) is dated as of March 11, 2011, and is",
       "page": 1,
-      "confidence": "high"
+      "confidence": "medium",
+      "note": "Agreement is dated March 11, 2011; term commences 'on the date hereof'."
     },
     "expirationDate": {
       "value": null,
       "quote": null,
       "page": null,
       "confidence": "high",
-      "note": "Only a 12-month duration from the date of the agreement is stated, with no explicit end date."
+      "note": "Initial term is 12 months from the date hereof; no explicit end date stated."
     },
     "autoRenews": {
       "value": true,
-      "quote": "Agreement shall automatically renew for additional and successive 12-month periods",
+      "quote": "Agreement shall automatically renew for additional and successive 12-month periods (such initial period and each subsequent 12-",
       "page": 8,
-      "confidence": "high",
-      "note": "Either party can stop renewal by giving 90 days' notice before the end of the term."
+      "confidence": "high"
     },
     "priceEscalation": {
-      "value": "Adjustments by mutual agreement for spec/packaging changes or materials cost changes over 5%, with 90 days' written notice; annual increases capped at 10% of original price per product, excluding extraordinary raw material changes",
-      "quote": "(iii) Total annual price increases from ARNET to ISATORI cannot exceed 10% of original purchase price in one calendar year, for any one product, excluding extraordinary changes in raw material prices.",
+      "value": "Adjustments by mutual agreement for spec changes or >5% materials cost changes, with 90 days' notice; annual increases capped at 10% of original price per product (excluding extraordinary raw material changes)",
+      "quote": "ARNET to ISATORI cannot exceed 10% of original purchase price in one calendar year, for any one product, excluding",
       "page": 1,
       "confidence": "medium"
     },
@@ -53,11 +53,10 @@
       "confidence": "high"
     },
     "minimumCommitment": {
-      "value": "Per-product minimum order quantities in Exhibit A (e.g., 2,500 tubs of Whey Protein Isolate Powder, Vanilla 2 lb); no overall purchase volume commitment",
-      "quote": "Vanilla 2 lb tub $9.75 per tub 2,500 tubs 20,000 tubs No",
-      "page": 18,
-      "confidence": "medium",
-      "note": "Section 2(b) says ISATORI makes no representations on quantities it will order."
+      "value": "No overall purchase commitment; per-product minimum order quantities apply in Exhibit A (e.g., 2,500 tubs of whey protein)",
+      "quote": "Disclaimer. ISATORI makes no representations regarding the quantities of the Products, if any, that it will order and purchase from",
+      "page": 3,
+      "confidence": "medium"
     },
     "poAcceptance": {
       "value": {
@@ -65,10 +64,9 @@
         "dayType": "business",
         "ifNoResponse": "not_stated"
       },
-      "quote": "ARNET shall have five (5) business days to accept or reject any purchase order, in writing.",
+      "quote": "(5) business days to accept or reject any purchase order, in writing. Purchase orders that are not accepted within this time frame",
       "page": 1,
-      "confidence": "medium",
-      "note": "If not accepted in time, the contract says only that the orders \"may be manufactured elsewhere\"; it does not say deemed accepted or rejected."
+      "confidence": "medium"
     },
     "priceList": {
       "value": [
@@ -203,17 +201,17 @@
     "engine": "claude-code",
     "model": "claude-sonnet-5-5",
     "effort": "medium",
-    "promptVersion": "v2",
+    "promptVersion": "v3",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1338,
-      "outputTokens": 2905,
-      "cacheReadTokens": 37688,
-      "cacheWriteTokens": 22427,
-      "costUsd": 0.12248579999999999
+      "inputTokens": 1355,
+      "outputTokens": 3071,
+      "cacheReadTokens": 120745,
+      "cacheWriteTokens": 45291,
+      "costUsd": 0.22390919999999997
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T16:41:16.446Z",
-    "durationMs": 29982
+    "startedAt": "2026-11-04T14:22:49.760Z",
+    "durationMs": 25266
   }
 }

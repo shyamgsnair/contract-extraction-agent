@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(python3 -I -c ' *)",
+      "Bash(mkdir -p ../../../scratch-v3)",
+      "Bash(rmdir ../../../scratch-v3)",
+      "Bash(pnpm score *)",
+      "Bash(CLAUDE_BIN=/Users/shyamnair/.local/bin/claude node --input-type=module -e ' *)",
+      "Bash(python3 -)",
+      "Bash(pnpm typecheck *)"
     ]
   }
 }

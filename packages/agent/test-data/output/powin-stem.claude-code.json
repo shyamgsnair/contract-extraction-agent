@@ -3,21 +3,21 @@
   "status": "extracted",
   "result": {
     "documentType": {
-      "value": "supply_agreement",
-      "quote": "MASTER SUPPLY AGREEMENT",
-      "page": 1,
+      "value": "msa",
+      "quote": "This Master Supply Agreement (together with all exhibits, schedules, purchase orders, and annexes hereto, this",
+      "page": 2,
       "confidence": "high"
     },
     "customerName": {
       "value": "Stem, Inc.",
-      "quote": "Stem, Inc.",
-      "page": 1,
+      "quote": "Stem, Inc., a company duly organized and existing under the laws of Delaware,",
+      "page": 2,
       "confidence": "high"
     },
     "vendorName": {
       "value": "Powin Energy Corporation",
-      "quote": "Powin Energy Corporation",
-      "page": 1,
+      "quote": "Energy Corporation, a Nevada corporation, with its principal place of business located at 20550 SW 115th Ave,",
+      "page": 2,
       "confidence": "high"
     },
     "effectiveDate": {
@@ -31,32 +31,34 @@
       "quote": null,
       "page": null,
       "confidence": "medium",
-      "note": "Initial term is one year, but no end date is explicitly stated."
+      "note": "Initial Term is one year with no explicit end date stated."
     },
     "autoRenews": {
       "value": false,
-      "quote": "upon written agreement from both Parties.",
+      "quote": "successive one (1) year terms (any such term, a “Renewal Term” and collectively with the Initial Term, the “Term”)",
       "page": 13,
-      "confidence": "medium",
-      "note": "Renewal terms require written agreement from both parties; either party may also terminate at end of term on 3 months' notice."
+      "confidence": "high",
+      "note": "Renewal is only upon written agreement from both Parties, so it is not automatic."
     },
     "priceEscalation": {
-      "value": "Annual adjustment each Jan 1 after the Pricing Period by change in U.S. PPI for electrical equipment, capped at 4% in either direction; otherwise fixed once PO accepted",
-      "quote": "percentage change in the U.S. Producer Price Index for electrical equipment over the prior twelve (12) months, provided that no",
+      "value": "Annual adjustment each January 1 after the Pricing Period (through 2021) by the change in U.S. PPI for electrical equipment, capped at 4% either direction; PO prices fixed once accepted",
+      "quote": "On January 1 of each calendar year after the Pricing Period, prices may be adjusted by the",
       "page": 25,
-      "confidence": "high"
+      "confidence": "medium",
+      "note": "The 4% cap is in the following line of the same sentence."
     },
     "paymentTermsDays": {
       "value": 30,
-      "quote": "5. Payment Terms. Customer shall pay each undisputed invoice within thirty (30) days after receipt. Customer's credit limit is",
+      "quote": "Customer shall pay each undisputed invoice within thirty (30) days after receipt.",
       "page": 25,
       "confidence": "high"
     },
     "minimumCommitment": {
       "value": "None",
-      "quote": "Customer's non-binding Order Volume Forecast for the Pricing Period is 200 MWh. Customer has no minimum",
+      "quote": "Customer has no minimum",
       "page": 25,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "The sentence continues on the next line: 'purchase commitment.'"
     },
     "poAcceptance": {
       "value": {
@@ -64,9 +66,10 @@
         "dayType": "business",
         "ifNoResponse": "rejected"
       },
-      "quote": "Order within the preceding time period shall be considered a rejection of such Purchase Order. If the Purchase Order",
+      "quote": "possible, but in no event later than ten (10) business days after receipt of such Purchase Order, deeming such document",
       "page": 2,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Section 2.1 says Supplier's failure to respond within the time period is considered a rejection."
     },
     "priceList": {
       "value": [
@@ -75,7 +78,7 @@
           "unitPrice": 315,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $315.00 per kWh $298.00 per kWh $285.00 per",
+          "quote": "duration $315.00 per kWh",
           "page": 25,
           "confidence": "high"
         },
@@ -84,7 +87,7 @@
           "unitPrice": 298,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $315.00 per kWh $298.00 per kWh $285.00 per",
+          "quote": "$298.00 per kWh",
           "page": 25,
           "confidence": "high"
         },
@@ -93,7 +96,7 @@
           "unitPrice": 285,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $315.00 per kWh $298.00 per kWh $285.00 per",
+          "quote": "$285.00 per",
           "page": 25,
           "confidence": "high"
         },
@@ -102,7 +105,7 @@
           "unitPrice": 289,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $289.00 per kWh $274.00 per kWh $262.00 per",
+          "quote": "duration $289.00 per kWh",
           "page": 25,
           "confidence": "high"
         },
@@ -111,7 +114,7 @@
           "unitPrice": 274,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $289.00 per kWh $274.00 per kWh $262.00 per",
+          "quote": "$274.00 per kWh",
           "page": 25,
           "confidence": "high"
         },
@@ -120,12 +123,12 @@
           "unitPrice": 262,
           "currency": "USD",
           "unitOfMeasure": "kWh AC Nameplate Capacity",
-          "quote": "duration $289.00 per kWh $274.00 per kWh $262.00 per",
+          "quote": "$262.00 per",
           "page": 25,
           "confidence": "high"
         }
       ],
-      "note": "Prices apply to POs accepted through Dec 31, 2021; tiers based on cumulative volume."
+      "note": "Exhibit C prices apply to POs accepted through December 31, 2021 (Pricing Period)."
     }
   },
   "checks": [
@@ -216,17 +219,17 @@
     "engine": "claude-code",
     "model": "claude-sonnet-5-5",
     "effort": "medium",
-    "promptVersion": "v2",
+    "promptVersion": "v3",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1340,
-      "outputTokens": 3968,
-      "cacheReadTokens": 54496,
-      "cacheWriteTokens": 10024,
-      "costUsd": 0.0851981
+      "inputTokens": 1355,
+      "outputTokens": 3199,
+      "cacheReadTokens": 164711,
+      "cacheWriteTokens": 66917,
+      "costUsd": 0.3160898
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T16:42:27.979Z",
-    "durationMs": 49039
+    "startedAt": "2026-11-04T14:23:38.891Z",
+    "durationMs": 32834
   }
 }

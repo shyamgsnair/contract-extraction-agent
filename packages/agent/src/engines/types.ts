@@ -1,6 +1,8 @@
 // The contract between extractContract and an engine. Like a Java interface: extractContract only talks to
 // EngineSession, so engines can be swapped without touching verification or the repair loop.
 
+import type { EngineLog } from "../log.ts";
+
 export type EngineName = "claude-code" | "api";
 
 export type Effort = "low" | "medium" | "high" | "xhigh" | "max";
@@ -12,6 +14,8 @@ export type EngineInput = {
   model: string;
   effort: Effort;
   instructions: string;
+  /** Receives the interaction log: prompts sent, Claude's answers and its tool calls. */
+  log: EngineLog;
 };
 
 export type Usage = {

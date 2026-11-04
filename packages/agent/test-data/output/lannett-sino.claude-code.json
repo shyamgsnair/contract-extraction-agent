@@ -10,13 +10,14 @@
     },
     "customerName": {
       "value": "LANNETT COMPANY, INC.",
-      "quote": "and LANNETT COMPANY, INC., a Delaware corporation having an address of 9000 State Road, Philadelphia, PA",
+      "quote": "LANNETT COMPANY, INC., a Delaware corporation having an address of 9000 State Road, Philadelphia, PA",
       "page": 1,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Quote line may differ in capitalization/bold; Lannett purchases the Product from Supplier."
     },
     "vendorName": {
       "value": "SINOTHERAPEUTICS INC.",
-      "quote": "by and between SINOTHERAPEUTICS INC., a limited company incorporated pursuant to the laws of the",
+      "quote": "SINOTHERAPEUTICS INC., a limited company incorporated pursuant to the laws of the",
       "page": 1,
       "confidence": "high"
     },
@@ -31,18 +32,18 @@
       "quote": null,
       "page": null,
       "confidence": "high",
-      "note": "Only a duration (five years from the Effective Date) is stated, not an explicit end date."
+      "note": "Only a five-year duration from the Effective Date is stated, no explicit end date."
     },
     "autoRenews": {
       "value": true,
-      "quote": "If neither Party is in default, in any material respect, of any of its obligations under this Agreement, then the Term of",
+      "quote": "this Agreement shall automatically renew for renewal terms of one (1) year each unless either Party provides written notice to the",
       "page": 21,
       "confidence": "medium",
-      "note": "Renews automatically for 1-year terms unless either party gives 180 days' notice, provided neither party is in material default."
+      "note": "Renews for 1-year terms if neither party is in material default and neither gives 180 days' notice."
     },
     "priceEscalation": {
-      "value": "Annual adjustment (up or down) after each anniversary of Commercial Launch based on change in Supplier's COGS over prior 12 months",
-      "quote": "Following each anniversary of the Commercial Launch of the Product, the Pricing for",
+      "value": "After each anniversary of Commercial Launch, price may increase or decrease with Supplier's COGS change over prior 12 months",
+      "quote": "3.2. Pricing Modifications. Following each anniversary of the Commercial Launch of the Product, the Pricing for",
       "page": 6,
       "confidence": "medium"
     },
@@ -53,10 +54,10 @@
       "confidence": "high"
     },
     "minimumCommitment": {
-      "value": null,
-      "quote": null,
-      "page": null,
-      "confidence": "medium"
+      "value": "Lannett must purchase the Product exclusively from Supplier (exclusive supply); no fixed minimum quantity stated",
+      "quote": "Lannett shall purchase the Product exclusively from Supplier and Supplier",
+      "page": 5,
+      "confidence": "low"
     },
     "poAcceptance": {
       "value": {
@@ -64,14 +65,15 @@
         "dayType": "business",
         "ifNoResponse": "accepted"
       },
-      "quote": "(5) Business Days of receipt of such Purchase Order, the Purchase Order shall be deemed accepted. All accepted Purchased Orders",
+      "quote": "5.3. Confirmation of Purchase Order. Supplier shall, within five (5) Business Days of receipt of a Purchase Order,",
       "page": 9,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Section 5.3 also says that if no notification is received within five Business Days, the Purchase Order is deemed accepted."
     },
     "priceList": {
       "value": [
         {
-          "item": "Posaconazole Delayed Release Tablets 100mg, pack size 60",
+          "item": "Posaconazole Delayed Release Tablets 100mg, pack of 60",
           "unitPrice": 310,
           "currency": "USD",
           "unitOfMeasure": "pack of 60",
@@ -125,7 +127,7 @@
     },
     {
       "field": "minimumCommitment",
-      "quote": "none",
+      "quote": "verified",
       "issues": []
     },
     {
@@ -145,17 +147,17 @@
     "engine": "claude-code",
     "model": "claude-sonnet-5-5",
     "effort": "medium",
-    "promptVersion": "v2",
+    "promptVersion": "v3",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1340,
-      "outputTokens": 2807,
-      "cacheReadTokens": 59204,
-      "cacheWriteTokens": 10100,
-      "costUsd": 0.0743629
+      "inputTokens": 1353,
+      "outputTokens": 2715,
+      "cacheReadTokens": 99029,
+      "cacheWriteTokens": 74240,
+      "costUsd": 0.33396960000000003
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T16:41:48.898Z",
-    "durationMs": 35825
+    "startedAt": "2026-11-04T14:23:15.480Z",
+    "durationMs": 23091
   }
 }

@@ -9,6 +9,8 @@ export type UploadRow = {
   fileName: string;
   uploadedAt: string;
   contractId: string | null;
+  /** The latest extraction run, whose interaction log the Log link opens. */
+  runId: string | null;
   /** Status of the latest run. "stalled" means it has been running far longer than any extraction should. */
   status: "running" | "stalled" | "to_review" | "flagged" | "failed" | "none";
   error: string | null;
@@ -42,6 +44,7 @@ export async function listRecentUploads(limit = 20): Promise<UploadRow[]> {
       fileName: doc.fileName,
       uploadedAt: doc.uploadedAt.toISOString(),
       contractId: contractRows.find((c) => c.documentId === doc.id)?.id ?? null,
+      runId: run?.id ?? null,
       status,
       error: run?.error ?? null,
       durationMs: run?.durationMs ?? null,

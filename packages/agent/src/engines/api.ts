@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import { clip } from "../log.ts";
 import { normalize } from "../pdf-text.ts";
 import { extractionJsonSchema } from "../prompt.ts";
 import { emptyUsage, addUsage, type EngineInput, type EngineSession, type Turn, type Usage } from "./types.ts";
@@ -55,6 +56,7 @@ export type ApiOptions = { apiKey?: string };
 
 export async function openApiSession(input: EngineInput, options: ApiOptions = {}): Promise<EngineSession> {
   const client = new Anthropic({ apiKey: options.apiKey }); // falls back to ANTHROPIC_API_KEY
+  const prompt = `Extract the fields from this contract (${input.pages.length} pages). Quotes are checked against the extracted page text, so use search_text and get_page to confirm the exact wording and page of every quote. Then call submit_extraction with the complete result.`;
   const messages: Anthropic.MessageParam[] = [
     {
       role: "user",
@@ -63,10 +65,7 @@ export async function openApiSession(input: EngineInput, options: ApiOptions = {
           type: "document",
           source: { type: "base64", media_type: "application/pdf", data: Buffer.from(input.pdfBytes).toString("base64") },
         },
-        {
-          type: "text",
-          text: `Extract the fields from this contract (${input.pages.length} pages). Quotes are checked against the extracted page text, so use search_text and get_page to confirm the exact wording and page of every quote. Then call submit_extraction with the complete result.`,
-        },
+        { type: "text", text: prompt },
       ],
     },
   ];
@@ -93,9 +92,18 @@ export async function openApiSession(input: EngineInput, options: ApiOptions = {
       if (message.stop_reason === "refusal") throw new Error("Claude declined to process this document.");
       if (message.stop_reason === "max_tokens") throw new Error(`Claude's answer exceeded ${MAX_TOKENS} tokens.`);
       messages.push({ role: "assistant", content: message.content });
+      for (const block of message.content) {
+        if (block.type === "text" && block.text.trim()) input.log({ kind: "output", title: "Claude says", text: block.text });
+        if (block.type === "thinking" && block.thinking.trim()) input.log({ kind: "output", title: "Claude's thinking", text: block.thinking });
+        if (block.type === "tool_use") {
+          if (block.name === "submit_extraction") input.log({ kind: "output", title: "Structured result", data: block.input });
+          else input.log({ kind: "tool_call", title: `${block.name} ${JSON.stringify(block.input)}`, data: block.input });
+        }
+      }
 
       const toolUses = message.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
       if (toolUses.length === 0) {
+        input.log({ kind: "input", title: "Reminder", text: "Call submit_extraction with the complete result." });
         messages.push({ role: "user", content: "Call submit_extraction with the complete result." });
         continue;
       }
@@ -103,7 +111,11 @@ export async function openApiSession(input: EngineInput, options: ApiOptions = {
       let submit: Anthropic.ToolUseBlock | undefined;
       for (const toolUse of toolUses) {
         if (toolUse.name === "submit_extraction") submit = toolUse;
-        else results.push({ type: "tool_result", tool_use_id: toolUse.id, ...runTool(toolUse, input.pages) });
+        else {
+          const result = runTool(toolUse, input.pages);
+          input.log({ kind: "tool_result", title: `${toolUse.name} ${result.is_error ? "failed" : "result"}`, text: clip(result.content), ok: !result.is_error });
+          results.push({ type: "tool_result", tool_use_id: toolUse.id, ...result });
+        }
       }
       if (submit) {
         pending = { submitId: submit.id, otherResults: results };
@@ -115,9 +127,13 @@ export async function openApiSession(input: EngineInput, options: ApiOptions = {
   }
 
   return {
-    extract: runUntilSubmit,
+    extract() {
+      input.log({ kind: "input", title: "Extraction prompt", text: `[the PDF, ${input.pages.length} pages]\n\n${prompt}` });
+      return runUntilSubmit();
+    },
     async repair(feedback) {
       if (!pending) throw new Error("repair() called before extract()");
+      input.log({ kind: "input", title: "Repair message", text: feedback });
       messages.push({
         role: "user",
         content: [

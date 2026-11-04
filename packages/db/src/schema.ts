@@ -101,3 +101,28 @@ export const extractedFields = pgTable(
   },
   (t) => [index().on(t.runId)],
 ).enableRLS();
+
+/**
+ * The interaction log of a run, one row per entry: prompts sent to Claude, its answers and tool calls, and our
+ * verification checks. Written while the run is going, so the web app can show it live.
+ */
+export const runLogEntries = pgTable(
+  "run_log_entries",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    runId: uuid()
+      .notNull()
+      .references(() => extractionRuns.id, { onDelete: "cascade" }),
+    /** Order within the run. */
+    seq: integer().notNull(),
+    at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+    /** 0 is the extraction; 1, 2, 3 are repair rounds. */
+    round: integer().notNull(),
+    kind: text({ enum: ["input", "output", "tool_call", "tool_result", "check", "usage"] }).notNull(),
+    title: text().notNull(),
+    text: text(),
+    data: jsonb(),
+    ok: boolean(),
+  },
+  (t) => [index().on(t.runId, t.seq)],
+).enableRLS();

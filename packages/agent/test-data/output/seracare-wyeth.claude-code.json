@@ -4,44 +4,46 @@
   "result": {
     "documentType": {
       "value": "supply_agreement",
-      "quote": "This Agreement (the “Supply Agreement” or the “Agreement”) entered into this 27th day of September 2002",
-      "page": 4,
+      "quote": "EX-10.12 6 dex1012.htm SUPPLY AGREEMENT",
+      "page": 1,
       "confidence": "high"
     },
     "customerName": {
       "value": "Wyeth Pharmaceuticals, Inc.",
-      "quote": "and Wyeth Pharmaceuticals, Inc., acting through the Wyeth BioPharma unit of",
-      "page": 4,
-      "confidence": "high"
+      "quote": "Wyeth Pharmaceuticals, Inc.",
+      "page": 1,
+      "confidence": "high",
+      "note": "Wyeth is the buyer; SeraCare is the SUPPLIER/distributor and Instituto Grifols the MANUFACTURER."
     },
     "vendorName": {
       "value": "SeraCare Life Sciences, Inc.",
-      "quote": "by and among SeraCare Life Sciences, Inc., a California Corporation with offices at 1935 Avenida Del Oro, Suite F, Oceanside,",
-      "page": 4,
-      "confidence": "high",
-      "note": "Instituto Grifols, S.A. is the manufacturer; SeraCare is the supplier/distributor invoicing Wyeth."
+      "quote": "SeraCare Life Sciences, Inc.",
+      "page": 1,
+      "confidence": "medium",
+      "note": "SeraCare is the SUPPLIER that invoices Wyeth; Instituto Grifols, S.A. is the MANUFACTURER and a co-party."
     },
     "effectiveDate": {
       "value": "2002-09-27",
-      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007",
+      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007, unless",
       "page": 8,
-      "confidence": "high"
+      "confidence": "high",
+      "note": "Execution Date is 27 September 2002 (page 4)."
     },
     "expirationDate": {
       "value": "2007-05-31",
-      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007",
+      "quote": "2.01 This Agreement enters into effect on the Execution Date and shall remain in full force and effect until May 31, 2007, unless",
       "page": 8,
       "confidence": "high"
     },
     "autoRenews": {
       "value": true,
-      "quote": "Thereafter, it shall be extended from year-to-year, unless",
+      "quote": "sooner terminated in accordance with Article 17 of this Agreement. Thereafter, it shall be extended from year-to-year, unless",
       "page": 8,
       "confidence": "high",
-      "note": "Extends year-to-year unless a party gives 12 months' prior written notice of termination."
+      "note": "Extended year-to-year unless a party gives at least 12 months' written notice."
     },
     "priceEscalation": {
-      "value": "Fixed for the term, except: reduced if Supplier sells to others at lower prices; adjusted up or down with Manufacturer's variable labor/material costs, capped at the US producer price index change",
+      "value": "Prices firm and fixed for the term, except reduction if SUPPLIER sells to others at lower prices, and adjustments for MANUFACTURER's labor/material cost changes capped at the U.S. producer price index change",
       "quote": "(a) Pricing according Appendix D shall be firm and fixed for the term of the Agreement, except as hereinafter provided.",
       "page": 15,
       "confidence": "medium"
@@ -53,22 +55,22 @@
       "confidence": "high"
     },
     "minimumCommitment": {
-      "value": null,
-      "quote": null,
-      "page": null,
-      "confidence": "medium"
+      "value": "Wyeth shall purchase at least 80% of its human serum albumin requirements from SUPPLIER",
+      "quote": "(b) Requirements and Supply Contract. During the term of this Agreement, Wyeth shall purchase at least eighty percent (80%) of its",
+      "page": 10,
+      "confidence": "high"
     },
     "poAcceptance": {
       "value": null,
       "quote": null,
       "page": null,
       "confidence": "medium",
-      "note": "The Manufacturer must accept Supplier's corresponding PO within four days (Section 3.01(iii)). The contract sets no acceptance deadline for Wyeth's POs to the Supplier. It does not say what happens if there is no response."
+      "note": "No number of days for the vendor to accept or reject POs is stated. Section 3.01(iii) gives MANUFACTURER four days (unspecified type) to accept SUPPLIER's PO, which is not Wyeth's PO acceptance by the vendor."
     },
     "priceList": {
       "value": [
         {
-          "item": "Human Serum Albumin PRODUCT, per 100 gram bottle",
+          "item": "PRODUCT (Human Serum Albumin for cell culture, per 100 gram bottle)",
           "unitPrice": 850,
           "currency": "USD",
           "unitOfMeasure": "100 gram bottle",
@@ -122,7 +124,7 @@
     },
     {
       "field": "minimumCommitment",
-      "quote": "none",
+      "quote": "verified",
       "issues": []
     },
     {
@@ -142,17 +144,17 @@
     "engine": "claude-code",
     "model": "claude-sonnet-5-5",
     "effort": "medium",
-    "promptVersion": "v2",
+    "promptVersion": "v3",
     "repairRounds": 0,
     "usage": {
-      "inputTokens": 1346,
-      "outputTokens": 3517,
-      "cacheReadTokens": 117145,
-      "cacheWriteTokens": 13299,
-      "costUsd": 0.10005549999999999
+      "inputTokens": 1353,
+      "outputTokens": 2684,
+      "cacheReadTokens": 154461,
+      "cacheWriteTokens": 129826,
+      "costUsd": 0.5615467999999999
     },
     "costIsEquivalent": true,
-    "startedAt": "2026-11-03T16:43:20.136Z",
-    "durationMs": 34959
+    "startedAt": "2026-11-04T14:24:12.077Z",
+    "durationMs": 28924
   }
 }

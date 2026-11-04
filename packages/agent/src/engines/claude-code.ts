@@ -1,12 +1,14 @@
 import { spawn } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
+import { clip, type EngineLog } from "../log.ts";
 import { extractionJsonSchema } from "../prompt.ts";
 import type { EngineInput, EngineSession, Turn, Usage } from "./types.ts";
 
 // Runs Claude Code headless (`claude -p`) on the developer's own Claude subscription, so development costs nothing
 // extra. Claude reads the PDF with Claude Code's Read tool and searches the page text files with Grep.
+// Output is streamed (one JSON event per line), so every message and tool call can go to the interaction log.
 
 const TIMEOUT_MS = 20 * 60 * 1000;
 
@@ -27,7 +29,8 @@ export async function openClaudeCodeSession(input: EngineInput, options: ClaudeC
 
   const commonArgs = [
     "--print",
-    "--output-format", "json",
+    "--output-format", "stream-json",
+    "--verbose", // stream-json needs it; adds every message and tool call to the stream
     "--model", input.model,
     "--effort", input.effort,
     "--system-prompt", input.instructions,
@@ -41,8 +44,9 @@ export async function openClaudeCodeSession(input: EngineInput, options: ClaudeC
   let sessionId: string | undefined;
 
   async function turn(prompt: string): Promise<Turn> {
+    input.log({ kind: "input", title: sessionId ? "Repair message" : "Extraction prompt", text: prompt });
     const args = sessionId ? [...commonArgs, "--resume", sessionId, prompt] : [...commonArgs, prompt];
-    const out = await runClaude(bin, args, dir);
+    const out = await runClaude(bin, args, dir, eventLogger(input.log, dir));
     if (out.is_error || out.subtype !== "success") {
       throw new Error(`Claude Code run failed (${out.subtype ?? "error"}): ${String(out.result ?? "").slice(0, 500)}`);
     }
@@ -54,7 +58,7 @@ export async function openClaudeCodeSession(input: EngineInput, options: ClaudeC
     extract: () =>
       turn(`Extract the fields from the contract in contract.pdf (${input.pages.length} pages).
 
-1. Read the whole PDF with the Read tool. It accepts at most 20 pages per call, so read it in page ranges ("1-20", "21-40" and so on).
+1. Read contract.pdf with one Read call on the whole file. Do not pass a pages parameter: the whole file shows you every page as an image and as text, while page ranges need a PDF rendering tool that may not be installed.
 2. The extracted text of each page is in pages/page-001.txt, pages/page-002.txt and so on. Quotes are checked against these files, so use Grep on the pages folder to confirm the exact wording and page of every quote.
 3. Return the complete result as structured output.`),
     repair: (feedback) => turn(feedback),
@@ -70,7 +74,7 @@ function pageFile(page: number): string {
   return `page-${String(page).padStart(3, "0")}.txt`;
 }
 
-/** The fields of `claude -p --output-format json` that we use. */
+/** The fields of the final "result" event of `claude -p --output-format stream-json` that we use. */
 type ClaudeResult = {
   subtype?: string;
   is_error?: boolean;
@@ -111,16 +115,91 @@ async function assertSubscriptionLogin(bin: string): Promise<void> {
   loginChecked = true;
 }
 
-async function runClaude(bin: string, args: string[], cwd: string): Promise<ClaudeResult> {
-  const stdout = await runCommand(bin, args, cwd);
-  try {
-    return JSON.parse(stdout) as ClaudeResult;
-  } catch {
-    throw new Error(`Claude Code returned output that is not JSON: ${stdout.slice(0, 500)}`);
-  }
+/** The parts of the other stream-json events that the log uses. */
+type StreamEvent = {
+  type?: string;
+  message?: { content?: string | ContentBlock[] };
+};
+type ContentBlock = {
+  type: string;
+  text?: string;
+  thinking?: string;
+  id?: string;
+  name?: string;
+  input?: Record<string, unknown>;
+  tool_use_id?: string;
+  content?: string | ContentBlock[];
+  is_error?: boolean;
+};
+
+/** Turns Claude Code's stream events into log entries. */
+function eventLogger(log: EngineLog, dir: string): (event: StreamEvent) => void {
+  const toolNames = new Map<string, string>(); // tool call id -> tool name
+  // Paths in tool calls point into the temporary working folder; show them relative to it.
+  const tidy = (text: string) => text.replace(new RegExp(`\\S*${basename(dir)}/`, "g"), "");
+
+  return (event) => {
+    const blocks = typeof event.message?.content === "string" ? [] : (event.message?.content ?? []);
+    for (const block of blocks) {
+      if (event.type === "assistant") {
+        if (block.type === "text" && block.text?.trim()) log({ kind: "output", title: "Claude says", text: block.text });
+        // On a subscription, thinking usually arrives empty (only its signature); log it only when there is text.
+        if (block.type === "thinking" && block.thinking?.trim()) log({ kind: "output", title: "Claude's thinking", text: block.thinking });
+        if (block.type === "tool_use") {
+          toolNames.set(block.id ?? "", block.name ?? "");
+          // Claude Code delivers the --json-schema answer as a call to its StructuredOutput tool.
+          if (block.name === "StructuredOutput") log({ kind: "output", title: "Structured result", data: block.input });
+          else log({ kind: "tool_call", title: tidy(describeTool(block.name ?? "", block.input ?? {})), data: block.input });
+        }
+      }
+      if (event.type === "user" && block.type === "tool_result") {
+        const name = toolNames.get(block.tool_use_id ?? "") ?? "Tool";
+        if (name === "StructuredOutput") continue; // just "Structured output provided successfully"
+        log({
+          kind: "tool_result",
+          title: block.is_error ? `${name} failed` : `${name} result`,
+          text: clip(tidy(toolResultText(block.content))),
+          ok: !block.is_error,
+        });
+      }
+    }
+  };
 }
 
-function runCommand(bin: string, args: string[], cwd: string): Promise<string> {
+function describeTool(name: string, input: Record<string, unknown>): string {
+  if (name === "Read") {
+    const pages = input.pages ? ` (pages ${String(input.pages)})` : "";
+    return `Read ${String(input.file_path ?? "")}${pages}`;
+  }
+  if (name === "Grep") return `Grep "${String(input.pattern ?? "")}" in ${String(input.path ?? ".")}`;
+  return `${name} ${clip(JSON.stringify(input), 120)}`;
+}
+
+/** A tool result as text. PDF page images are named, never stored. */
+function toolResultText(content: string | ContentBlock[] | undefined): string {
+  if (typeof content === "string") return content;
+  return (content ?? [])
+    .map((part) => (part.type === "text" ? (part.text ?? "") : part.type === "image" ? "[page image]" : `[${part.type}]`))
+    .join("\n");
+}
+
+async function runClaude(bin: string, args: string[], cwd: string, onEvent: (event: StreamEvent) => void): Promise<ClaudeResult> {
+  let result: ClaudeResult | undefined;
+  const stdout = await runCommand(bin, args, cwd, (line) => {
+    let event: StreamEvent;
+    try {
+      event = JSON.parse(line) as StreamEvent;
+    } catch {
+      return; // not an event line
+    }
+    if (event.type === "result") result = event as ClaudeResult;
+    else onEvent(event);
+  });
+  if (!result) throw new Error(`Claude Code finished without a result: ${stdout.slice(-500)}`);
+  return result;
+}
+
+function runCommand(bin: string, args: string[], cwd: string, onLine?: (line: string) => void): Promise<string> {
   const env = { ...process.env };
   for (const name of BILLING_ENV_VARS) delete env[name];
 
@@ -129,7 +208,15 @@ function runCommand(bin: string, args: string[], cwd: string): Promise<string> {
     const child = spawn(bin, args, { cwd, env, stdio: ["ignore", "pipe", "pipe"], timeout: TIMEOUT_MS });
     let stdout = "";
     let stderr = "";
-    child.stdout.on("data", (chunk: Buffer) => (stdout += chunk.toString()));
+    let partial = ""; // an incomplete last line, completed by the next chunk
+    child.stdout.on("data", (chunk: Buffer) => {
+      const text = chunk.toString();
+      stdout += text;
+      if (!onLine) return;
+      const lines = (partial + text).split("\n");
+      partial = lines.pop() ?? "";
+      for (const line of lines) if (line.trim()) onLine(line);
+    });
     child.stderr.on("data", (chunk: Buffer) => (stderr += chunk.toString()));
     child.on("error", (err) =>
       reject(
@@ -139,6 +226,7 @@ function runCommand(bin: string, args: string[], cwd: string): Promise<string> {
       ),
     );
     child.on("close", (code) => {
+      if (onLine && partial.trim()) onLine(partial);
       // `claude -p` can exit non-zero yet still print a JSON result describing the error, so prefer stdout.
       if (code === 0 || stdout.trim().startsWith("{")) resolve(stdout);
       else reject(new Error(`${bin} ${args[0]} exited with code ${code}: ${stderr.slice(0, 500)}`));

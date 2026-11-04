@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type { createDb } from "./index.ts";
-import { contracts, documents, extractedFields, extractionRuns } from "./schema.ts";
+import { contracts, documents, extractedFields, extractionRuns, runLogEntries } from "./schema.ts";
 
 // Saving extraction results. The input types below mirror the agent's output shapes on purpose instead of
 // importing them, so this package does not depend on @cea/agent (TypeScript checks the shapes match at the
@@ -199,4 +199,36 @@ function fieldEvidence(result: ExtractedContract, checks: FieldCheck[]) {
     });
   });
   return rows;
+}
+
+export type RunLogEntry = {
+  round: number;
+  kind: "input" | "output" | "tool_call" | "tool_result" | "check" | "usage";
+  title: string;
+  text?: string;
+  data?: unknown;
+  ok?: boolean;
+};
+
+/**
+ * Saves a run's interaction log as it happens. write() returns at once and inserts in the background, one entry
+ * after another so the order is kept (like a single-threaded executor in Java); flush() waits for the queue.
+ * A failed insert is reported and skipped, so logging never breaks an extraction.
+ */
+export function createRunLogWriter(db: Db, runId: string) {
+  let seq = 0;
+  let queue: Promise<void> = Promise.resolve();
+  return {
+    write(entry: RunLogEntry) {
+      const row = { runId, seq: seq++, ...entry, data: entry.data as unknown };
+      queue = queue.then(() =>
+        db
+          .insert(runLogEntries)
+          .values(row)
+          .then(() => undefined)
+          .catch((err: unknown) => console.error("Could not save log entry", runId, row.seq, err)),
+      );
+    },
+    flush: () => queue,
+  };
 }

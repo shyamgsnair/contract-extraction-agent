@@ -3,8 +3,9 @@ import { openClaudeCodeSession } from "./engines/claude-code.ts";
 import { addUsage, type Effort, type EngineInput, type EngineName, type EngineSession, type Usage } from "./engines/types.ts";
 import type { ExtractionResult } from "./fields.ts";
 import { checkIntake, type IntakeRejection } from "./intake.ts";
-import { PROMPT_VERSION, repairMessage, systemInstructions } from "./prompt.ts";
-import { listIssues, verify, type FieldCheck } from "./verify.ts";
+import type { LogEntry } from "./log.ts";
+import { extractionJsonSchema, PROMPT_VERSION, repairMessage, systemInstructions } from "./prompt.ts";
+import { listIssues, verify, type FieldCheck, type Verification } from "./verify.ts";
 
 export type ExtractOptions = {
   /** "claude-code" (default) runs on your Claude subscription; "api" is billed per token. */
@@ -19,6 +20,8 @@ export type ExtractOptions = {
   claudeBin?: string;
   /** Progress messages, e.g. for a CLI or a job log. */
   onProgress?: (message: string) => void;
+  /** The interaction log: every prompt sent to Claude, its answers and tool calls, and our checks. */
+  onLog?: (entry: LogEntry) => void;
 };
 
 export type RunRecord = {
@@ -63,11 +66,25 @@ export async function extractContract(pdfBytes: Uint8Array, options: ExtractOpti
   const maxRepairRounds = options.maxRepairRounds ?? DEFAULTS.maxRepairRounds;
   const progress = options.onProgress ?? (() => {});
   const startedAt = new Date();
+  let round = 0;
+  const log = (entry: Omit<LogEntry, "round">) => {
+    try {
+      options.onLog?.({ round, ...entry });
+    } catch {
+      // a failing listener must never stop an extraction
+    }
+  };
 
   const intake = await checkIntake(pdfBytes);
   if (!intake.ok) return { status: "rejected", reason: intake.reason, message: intake.message };
 
-  const input: EngineInput = { pdfBytes, pages: intake.pages, model, effort, instructions: systemInstructions() };
+  const input: EngineInput = { pdfBytes, pages: intake.pages, model, effort, instructions: systemInstructions(), log };
+  log({
+    kind: "input",
+    title: `System instructions (prompt ${PROMPT_VERSION}, ${engine}, ${model}, effort ${effort})`,
+    text: input.instructions,
+    data: { outputSchema: extractionJsonSchema() },
+  });
   const session: EngineSession =
     engine === "api"
       ? await openApiSession(input, { apiKey: options.apiKey })
@@ -75,18 +92,25 @@ export async function extractContract(pdfBytes: Uint8Array, options: ExtractOpti
 
   try {
     progress(`extracting with ${engine} (${model}, ${intake.pages.length} pages)`);
+    let roundStart = Date.now();
     let turn = await session.extract();
     let usage = turn.usage;
+    logUsage(log, turn.usage, Date.now() - roundStart);
     let verification = verify(turn.output, intake.pages);
+    logChecks(log, verification);
     let repairRounds = 0;
 
     while (!verification.passed && repairRounds < maxRepairRounds) {
       repairRounds++;
+      round = repairRounds;
       const issues = listIssues(verification);
       progress(`repair round ${repairRounds}: ${issues.length} problem(s)`);
+      roundStart = Date.now();
       turn = await session.repair(repairMessage(issues));
       usage = addUsage(usage, turn.usage);
+      logUsage(log, turn.usage, Date.now() - roundStart);
       verification = verify(turn.output, intake.pages);
+      logChecks(log, verification);
     }
 
     return {
@@ -110,4 +134,24 @@ export async function extractContract(pdfBytes: Uint8Array, options: ExtractOpti
   } finally {
     await session.close();
   }
+}
+
+function logUsage(log: (entry: Omit<LogEntry, "round">) => void, usage: Usage, durationMs: number) {
+  const cost = usage.costUsd === null ? "cost unknown" : `$${usage.costUsd.toFixed(4)}`;
+  log({
+    kind: "usage",
+    title: `${usage.inputTokens + usage.cacheReadTokens + usage.cacheWriteTokens} input tokens (${usage.cacheReadTokens} from cache) · ${usage.outputTokens} output tokens · ${cost} · ${Math.round(durationMs / 1000)}s`,
+    data: { ...usage, durationMs },
+  });
+}
+
+function logChecks(log: (entry: Omit<LogEntry, "round">) => void, verification: Verification) {
+  const issues = listIssues(verification);
+  log({
+    kind: "check",
+    title: verification.passed ? "Verification passed" : `Verification failed: ${issues.length} problem(s)`,
+    text: issues.length ? issues.map((i) => `• ${i}`).join("\n") : undefined,
+    data: verification.checks,
+    ok: verification.passed,
+  });
 }

@@ -55,6 +55,7 @@ export async function getContract(id: string): Promise<ContractDetail | null> {
     needsReview: row.contract.needsReview,
     reviewStatus: row.contract.reviewStatus,
     run: row.run && {
+      id: row.run.id,
       engine: row.run.engine,
       model: row.run.model,
       promptVersion: row.run.promptVersion,

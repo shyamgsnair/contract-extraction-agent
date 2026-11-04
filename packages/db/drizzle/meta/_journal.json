@@ -15,6 +15,13 @@
       "when": 1793732203220,
       "tag": "0001_true_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793800628350,
+      "tag": "0002_odd_callisto",
+      "breakpoints": true
     }
   ]
 }
